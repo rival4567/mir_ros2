@@ -11,19 +11,19 @@
   <xacro:macro name="sick_s300" params="link topic prefix">
     <link name="${prefix}${link}">
       <visual>
-        <origin xyz="0.0 0.0 0.0" rpy="${pi} 0 0" />
+        <origin xyz="-0.335 -0.385 0.1555" rpy="0 0 ${3*pi/4}" />
         <geometry>
-          <mesh filename="package://mir_description/meshes/visual/sick_lms-100.stl" />
+          <mesh filename="package://mir_description/meshes/mir_100/visual/SICK-lidar.dae" />
         </geometry>
         <!-- <xacro:insert_block name="material_yellow" /> -->
-        <xacro:insert_block name="material_black" />
+        <!-- <xacro:insert_block name="material_black" /> -->
       </visual>
-      <collision>
+      <!-- <collision>
         <origin xyz="0.0 0.0 0.0" rpy="${pi} 0 0" />
         <geometry>
-          <mesh filename="package://mir_description/meshes/visual/sick_lms-100.stl" />
+          <mesh filename="package://mir_description/meshes/mir_100/visual/SICK-lidar.dae" />
         </geometry>
-      </collision>
+      </collision> -->
       <xacro:box_inertial x="${laser_x}" y="${laser_y}" z="${laser_z}" mass="${laser_mass}">
         <origin xyz="0 0 0" />
       </xacro:box_inertial>
@@ -31,7 +31,7 @@
 
     <gazebo reference="${prefix}${link}">
       <!-- <material value="Gazebo/Yellow" /> -->
-      <material value="Gazebo/FlatBlack" />
+      <!-- <material value="Gazebo/FlatBlack" /> -->
 
       <sensor type="ray" name="${prefix}${link}">
         <pose>0 0 0 0 0 0</pose>

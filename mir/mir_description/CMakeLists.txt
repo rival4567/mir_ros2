@@ -7,6 +7,7 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
+find_package(ros_gz REQUIRED)
 find_package(gz_ros2_control REQUIRED)
 find_package(diff_drive_controller REQUIRED)
 find_package(gz_plugin_vendor REQUIRED)
@@ -27,5 +28,16 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+# Install launch and urdf files
+install(DIRECTORY
+  config
+  launch
+  urdf
+  meshes
+  world
+  rviz
+  DESTINATION share/${PROJECT_NAME}/
+)
 
 ament_package()

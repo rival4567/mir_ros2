@@ -3,12 +3,13 @@
 <package format="3">
   <name>mir_description</name>
   <version>0.0.1</version>
-  <description>URDF Description of the MiR 250</description>
+  <description>URDF Description of the MiR robots</description>
   <maintainer email="shivam.shivam@th-deg.de">Shivam Shivam</maintainer>
   <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <depend>ros_gz</depend>
   <depend>gz_ros2_control</depend>
   <depend>diff_drive_controller</depend>
   <depend>gz_plugin_vendor</depend>
@@ -21,7 +22,12 @@
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
+  <exec_depend>launch_ros</exec_depend>
+  <exec_depend>urdf_launch</exec_depend>
+
+
   <export>
     <build_type>ament_cmake</build_type>
+    <gazebo_ros gazebo_model_path="${prefix}/../"/>
   </export>
 </package>
