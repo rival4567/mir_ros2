@@ -21,7 +21,7 @@
         <param name="robot_description" value="$(command 'xacro $(var model)')" />
         <param name="use_sim_time" value="true" />
     </node>
-
+    <!-- Add gazebo bridge for trasmitting topics from gazebo to ROS -->
     <!-- Show in RViz -->
     <group if="$(var start_rviz)">
         <include file="$(find-pkg-share mir_description)/launch/rviz.launch">
@@ -30,5 +30,4 @@
             <arg name="sim" value="true" />
         </include>
     </group>
-
 </launch>
