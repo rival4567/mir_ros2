@@ -39,22 +39,14 @@
   </joint>
   <link name="imu_link"/>
   <gazebo>
-    <plugin filename="libhector_gazebo_ros_imu.so" name="imu_plugin">
-      <updateRate>50.0</updateRate>
-      <bodyName>imu_link</bodyName>
-      <frameId>imu_frame</frameId>
-      <!-- from real MiR -->
-      <topicName>imu_data</topicName>
-      <accelDrift>0.0 0.0 0.0</accelDrift>
-      <accelGaussianNoise>0.007071067811865475 0.01 0.011401754250991379</accelGaussianNoise>
-      <!-- real MiR linear_acceleration_covariance [5e-05, 0.0, 0.0, 0.0, 0.0001, 0.0, 0.0, 0.0, 0.00013] -->
-      <rateDrift>0.0 0.0 0.0</rateDrift>
-      <rateGaussianNoise>0.00282842712474619 0.00282842712474619 0.0005477225575051661</rateGaussianNoise>
-      <!-- real MiR angular_velocity_covariance [8e-06, 0.0, 0.0, 0.0, 8e-06, 0.0, 0.0, 0.0, 3e-07] -->
-      <yawDrift>0.0</yawDrift>
-      <yawGaussianNoise>0.31622776601683794</yawGaussianNoise>
-      <!-- real MiR orientation_covariance [0.1, 0.0, 0.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.1] -->
-    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
+      </plugin>
+    <sensor name="imu_sensor" type="imu">
+      <always_on>1</always_on>
+      <update_rate>50.0</update_rate>
+      <visualize>true</visualize>
+      <topic>imu_data</topic>
+    </sensor>
   </gazebo>
   <!-- Create an alias for imu_link. This is necessary because the real MiR's
          TF has imu_link, but the imu_data topic is published in the imu_frame
@@ -87,40 +79,35 @@
     </inertial>
   </link>
   <gazebo reference="front_laser_link">
-    <!-- <material value="Gazebo/Yellow" /> -->
-    <!-- <material value="Gazebo/FlatBlack" /> -->
     <sensor name="front_laser_link" type="ray">
-      <pose>0 0 0 0 0 0</pose>
-      <visualize>false</visualize>
+      &quot;
+          
+      <pose relative_to="front_laser_link">0 0 0 0 0 0</pose>
+      <topic>f_scan</topic>
       <update_rate>12.5</update_rate>
       <ray>
         <scan>
           <horizontal>
             <samples>541</samples>
             <resolution>1</resolution>
-            <!-- has to be 1; actual resolution will be computed from number of samples + min_angle/max_angle -->
             <min_angle>-2.35619449615</min_angle>
             <max_angle>2.35619449615</max_angle>
           </horizontal>
+          <vertical>
+            <samples>1</samples>
+            <resolution>0.01</resolution>
+            <min_angle>0</min_angle>
+            <max_angle>0</max_angle>
+          </vertical>
         </scan>
         <range>
           <min>0.05</min>
           <max>29.0</max>
           <resolution>0.01</resolution>
         </range>
-        <noise>
-          <type>gaussian</type>
-          <!-- Noise parameters based on published spec for S300 achieving
-                 "+-29mm" accuracy at range < 3m (~0.01 of the range) at
-                 1 sigma. -->
-          <mean>0.0</mean>
-          <stddev>0.01</stddev>
-        </noise>
       </ray>
-      <plugin filename="libgazebo_ros_laser.so" name="gazebo_ros_front_laser_link_controller">
-        <frameName>front_laser_link</frameName>
-        <topicName>f_scan</topicName>
-      </plugin>
+      <always_on>1</always_on>
+      <visualize>true</visualize>
     </sensor>
   </gazebo>
   <joint name="base_link_to_back_laser_joint" type="fixed">
@@ -144,40 +131,35 @@
     </inertial>
   </link>
   <gazebo reference="back_laser_link">
-    <!-- <material value="Gazebo/Yellow" /> -->
-    <!-- <material value="Gazebo/FlatBlack" /> -->
     <sensor name="back_laser_link" type="ray">
-      <pose>0 0 0 0 0 0</pose>
-      <visualize>false</visualize>
+      &quot;
+          
+      <pose relative_to="back_laser_link">0 0 0 0 0 0</pose>
+      <topic>b_scan</topic>
       <update_rate>12.5</update_rate>
       <ray>
         <scan>
           <horizontal>
             <samples>541</samples>
             <resolution>1</resolution>
-            <!-- has to be 1; actual resolution will be computed from number of samples + min_angle/max_angle -->
             <min_angle>-2.35619449615</min_angle>
             <max_angle>2.35619449615</max_angle>
           </horizontal>
+          <vertical>
+            <samples>1</samples>
+            <resolution>0.01</resolution>
+            <min_angle>0</min_angle>
+            <max_angle>0</max_angle>
+          </vertical>
         </scan>
         <range>
           <min>0.05</min>
           <max>29.0</max>
           <resolution>0.01</resolution>
         </range>
-        <noise>
-          <type>gaussian</type>
-          <!-- Noise parameters based on published spec for S300 achieving
-                 "+-29mm" accuracy at range < 3m (~0.01 of the range) at
-                 1 sigma. -->
-          <mean>0.0</mean>
-          <stddev>0.01</stddev>
-        </noise>
       </ray>
-      <plugin filename="libgazebo_ros_laser.so" name="gazebo_ros_back_laser_link_controller">
-        <frameName>back_laser_link</frameName>
-        <topicName>b_scan</topicName>
-      </plugin>
+      <always_on>1</always_on>
+      <visualize>true</visualize>
     </sensor>
   </gazebo>
   <!-- Ultrasound sensors -->
@@ -562,18 +544,18 @@
     <kd value="1.0"/>
     <minDepth>0.01</minDepth>
   </gazebo>
-  <gazebo>
-    <plugin filename="libgazebo_ros_p3d.so" name="p3d_base_controller">
-      <alwaysOn>true</alwaysOn>
-      <updateRate>50.0</updateRate>
-      <bodyName>base_footprint</bodyName>
-      <topicName>base_pose_ground_truth</topicName>
-      <gaussianNoise>0.01</gaussianNoise>
-      <frameName>map</frameName>
-      <xyzOffsets>0 0 0</xyzOffsets>
-      <rpyOffsets>0 0 0</rpyOffsets>
-    </plugin>
-  </gazebo>
+  <!-- <gazebo>
+      <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>50.0</updateRate>
+        <bodyName>${prefix}base_footprint</bodyName>
+        <topicName>base_pose_ground_truth</topicName>
+        <gaussianNoise>0.01</gaussianNoise>
+        <frameName>map</frameName>
+        <xyzOffsets>0 0 0</xyzOffsets>
+        <rpyOffsets>0 0 0</rpyOffsets>
+      </plugin>
+    </gazebo> -->
   <gazebo>
     <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
       <controlPeriod>0.001</controlPeriod>

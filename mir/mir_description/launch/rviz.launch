@@ -2,11 +2,12 @@
   <arg name="model" default="$(find-pkg-share mir_description)/urdf/mir.urdf.xacro" />
   <arg name="use_gui" default="true" />
   <arg name="sim" default="false" />
-  <arg name="mir_type" default="mir_200" />
+  <arg name="mir_type" default="mir_100" />
   <arg name="tf_prefix" default="" />
 
   <node name="robot_state_publisher" pkg="robot_state_publisher" exec="robot_state_publisher" output="screen">
       <param name="robot_description" value="$(command 'xacro $(var model) tf_prefix:=$(var tf_prefix) mir_type:=$(var mir_type)')" />
+      <param name="use_sim_time" value="true" />
   </node>
  
   <group unless="$(var sim)">

@@ -3,7 +3,19 @@
 
   <xacro:macro name="diff_controller_plugin_gazebo" params="prefix left_wheel_joint right_wheel_joint wheel_separation wheel_radius">
     <gazebo>
-      <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
+
+      <!--diff drive plugin-->
+      <plugin
+          filename="gz-sim-diff-drive-system"
+          name="gz::sim::systems::DiffDrive">
+          <left_joint>${left_wheel_joint}</left_joint>
+          <right_joint>${right_wheel_joint}</right_joint>
+          <wheel_separation>${wheel_separation}</wheel_separation>
+          <wheel_radius>${wheel_radius}</wheel_radius>
+          <odom_publish_frequency>1</odom_publish_frequency>
+          <topic>mobile_base_controller/cmd_vel</topic>
+      </plugin>
+      <!-- <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
         <legacyMode>false</legacyMode>
         <alwaysOn>true</alwaysOn>
         <updateRate>1000.0</updateRate>
@@ -22,7 +34,7 @@
         <publishWheelTF>false</publishWheelTF>
         <odometrySource>world</odometrySource>
         <rosDebugLevel>Debug</rosDebugLevel>
-      </plugin>
+      </plugin> -->
     </gazebo>
   </xacro:macro>
 
@@ -46,7 +58,7 @@
   </xacro:macro>
 
   <xacro:macro name="p3d_base_controller" params="prefix">
-    <gazebo>
+    <!-- <gazebo>
       <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
         <alwaysOn>true</alwaysOn>
         <updateRate>50.0</updateRate>
@@ -57,6 +69,6 @@
         <xyzOffsets>0 0 0</xyzOffsets>
         <rpyOffsets>0 0 0</rpyOffsets>
       </plugin>
-    </gazebo>
+    </gazebo> -->
   </xacro:macro>
 </robot>

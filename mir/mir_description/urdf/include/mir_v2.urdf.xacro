@@ -229,9 +229,10 @@
       <origin xyz="0.0 0.0 0.25" rpy="0 0 0" />  <!-- same as real MiR -->
     </joint>
 
-    <link name="${prefix}imu_link" />
+    <link name="${prefix}imu_link">
+      <xacro:imu_gazebo link="${prefix}imu_link" imu_topic="imu_data" update_rate="50.0" />
+    </link>
 
-    <xacro:imu_gazebo link="${prefix}imu_link" imu_topic="imu_data" update_rate="50.0" />
 
     <!-- Create an alias for imu_link. This is necessary because the real MiR's
          TF has imu_link, but the imu_data topic is published in the imu_frame
