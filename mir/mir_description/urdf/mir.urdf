@@ -37,17 +37,16 @@
     <origin rpy="0 0 0" xyz="0.0 0.0 0.25"/>
     <!-- same as real MiR -->
   </joint>
-  <link name="imu_link"/>
-  <gazebo>
-    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
-      </plugin>
-    <sensor name="imu_sensor" type="imu">
-      <always_on>1</always_on>
-      <update_rate>50.0</update_rate>
-      <visualize>true</visualize>
-      <topic>imu_data</topic>
-    </sensor>
-  </gazebo>
+  <link name="imu_link">
+    <gazebo>
+      <sensor name="imu_sensor" type="imu">
+        <always_on>true</always_on>
+        <update_rate>50.0</update_rate>
+        <visualize>true</visualize>
+        <topic>imu_data</topic>
+      </sensor>
+    </gazebo>
+  </link>
   <!-- Create an alias for imu_link. This is necessary because the real MiR's
          TF has imu_link, but the imu_data topic is published in the imu_frame
          frame. -->
@@ -80,8 +79,6 @@
   </link>
   <gazebo reference="front_laser_link">
     <sensor name="front_laser_link" type="ray">
-      &quot;
-          
       <pose relative_to="front_laser_link">0 0 0 0 0 0</pose>
       <topic>f_scan</topic>
       <update_rate>12.5</update_rate>
@@ -132,8 +129,6 @@
   </link>
   <gazebo reference="back_laser_link">
     <sensor name="back_laser_link" type="ray">
-      &quot;
-          
       <pose relative_to="back_laser_link">0 0 0 0 0 0</pose>
       <topic>b_scan</topic>
       <update_rate>12.5</update_rate>
@@ -556,12 +551,15 @@
         <rpyOffsets>0 0 0</rpyOffsets>
       </plugin>
     </gazebo> -->
-  <gazebo>
-    <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
-      <controlPeriod>0.001</controlPeriod>
-      <legacyModeNS>false</legacyModeNS>
-    </plugin>
-  </gazebo>
+  <!-- <gazebo>
+      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        <xacro:unless value="${robot_namespace == ''}">
+          <robotNamespace>${robot_namespace}</robotNamespace>
+        </xacro:unless>
+        <controlPeriod>0.001</controlPeriod>
+        <legacyModeNS>false</legacyModeNS>
+      </plugin>
+    </gazebo> -->
   <!-- instead of the controller_plugin_gazebo, you can use the diffdrive controller like this
     <xacro:diff_controller_plugin_gazebo prefix=""
       left_wheel_joint="left_wheel_joint"
