@@ -10,6 +10,7 @@
     <arg name="gz_args" default="--headless-rendering -s -v 4 -r $(var world)" if="$(var headless)" />
     <arg name="gz_args" default="-r $(var world)" unless="$(var headless)"/>
     <arg name="config_file" default="$(find-pkg-share mir_description)/config/ros-gz-bridge.yaml" />
+    <arg name="robot_controllers" default="$(find-pkg-share mir_description)/config/diff_drive_controller_velocity.yaml" />
 
 
     <!-- Start Gazebo -->
@@ -21,10 +22,15 @@
             <arg name="gz_args" value="$(var gz_args)" />
             <arg name="config_file" value="$(var config_file)" />
             <arg name="bridge_name" value="xyz" />
-
         </include>
         <node name="spawn_robot_urdf" pkg="ros_gz_sim" exec="create"
             args="-topic /robot_description -x 0.0 -y 0.0 -z 0.0 -name mir" output="screen" />
+        
+        <!-- Run the following two nodes separately -->
+        <node name="controller_manager" pkg="controller_manager" exec="spawner"
+            args="joint_state_broadcaster --controller-manager mir_controller_manager"/>
+        <node name="diff_drive_base_controller" pkg="controller_manager" exec="spawner"
+            args="diff_drive_base_controller --param-file $(var robot_controllers)  --controller-manager mir_controller_manager"/>
     </group>
 
     <!-- Add gazebo bridge for trasmitting topics from gazebo to ROS -->
@@ -33,7 +39,7 @@
         <include file="$(find-pkg-share mir_description)/launch/rviz.launch">
             <arg name="model" value="$(var model)" />
             <arg name="use_gui" value="false" />
-            <arg name="mir_type" value="mir_100" />
+            <arg name="mir_type" value="$(var mir_type)" />
             <arg name="sim" value="true" />
         </include>
     </group>

@@ -38,14 +38,13 @@
     <!-- same as real MiR -->
   </joint>
   <link name="imu_link">
-    <gazebo>
-      <sensor name="imu_sensor" type="imu">
-        <always_on>true</always_on>
-        <update_rate>50.0</update_rate>
-        <visualize>true</visualize>
-        <topic>imu_data</topic>
-      </sensor>
-    </gazebo>
+    <!-- Add the imu sensor here -->
+    <inertial>
+      <!-- <origin xyz="0 0 -0.042500000044" rpy="${0.5 * pi} ${24 * deg_to_rad} ${1.5 * pi}" /> -->
+      <origin rpy="0.4188790204786391 0 1.5707963267948966 " xyz="0 0 -0.042500000044"/>
+      <mass value="0.3097539019"/>
+      <inertia ixx="0.0005844517978" ixy="0" ixz="0" iyy="0.00052872551237" iyz="0" izz="0.00017923555074"/>
+    </inertial>
   </link>
   <!-- Create an alias for imu_link. This is necessary because the real MiR's
          TF has imu_link, but the imu_data topic is published in the imu_frame
@@ -77,36 +76,37 @@
       <inertia ixx="0.005824997669999999" ixy="0.0" ixz="0.0" iyy="0.00585609765756" iyz="0.0" izz="0.00483609806556"/>
     </inertial>
   </link>
-  <gazebo reference="front_laser_link">
-    <sensor name="front_laser_link" type="ray">
-      <pose relative_to="front_laser_link">0 0 0 0 0 0</pose>
-      <topic>f_scan</topic>
-      <update_rate>12.5</update_rate>
-      <ray>
-        <scan>
-          <horizontal>
-            <samples>541</samples>
-            <resolution>1</resolution>
-            <min_angle>-2.35619449615</min_angle>
-            <max_angle>2.35619449615</max_angle>
-          </horizontal>
-          <vertical>
-            <samples>1</samples>
-            <resolution>0.01</resolution>
-            <min_angle>0</min_angle>
-            <max_angle>0</max_angle>
-          </vertical>
-        </scan>
-        <range>
-          <min>0.05</min>
-          <max>29.0</max>
-          <resolution>0.01</resolution>
-        </range>
-      </ray>
-      <always_on>1</always_on>
-      <visualize>true</visualize>
-    </sensor>
-  </gazebo>
+  <!-- <gazebo reference="${prefix}${link}">
+      <sensor name='${prefix}${link}' type='gpu_lidar'>
+          <pose relative_to='${prefix}${link}'>0 0 0 0 0 0</pose>
+          <topic>${topic}</topic>
+          <update_rate>12.5</update_rate>
+          <gz_frame_id>base_scan</gz_frame_id>
+          <lidar>
+              <scan>
+                  <horizontal>
+                      <samples>541</samples>
+                      <resolution>1</resolution>
+                      <min_angle>-2.35619449615</min_angle>
+                      <max_angle>2.35619449615</max_angle>
+                  </horizontal>
+                  <vertical>
+                      <samples>1</samples>
+                      <resolution>0.01</resolution>
+                      <min_angle>0</min_angle>
+                      <max_angle>0</max_angle>
+                  </vertical>
+              </scan>
+              <range>
+                  <min>0.05</min>
+                  <max>29.0</max>
+                  <resolution>0.01</resolution>
+              </range>
+          </lidar>
+          <always_on>true</always_on>
+          <visualize>true</visualize>
+      </sensor>
+    </gazebo> -->
   <joint name="base_link_to_back_laser_joint" type="fixed">
     <parent link="base_link"/>
     <child link="back_laser_link"/>
@@ -127,36 +127,37 @@
       <inertia ixx="0.005824997669999999" ixy="0.0" ixz="0.0" iyy="0.00585609765756" iyz="0.0" izz="0.00483609806556"/>
     </inertial>
   </link>
-  <gazebo reference="back_laser_link">
-    <sensor name="back_laser_link" type="ray">
-      <pose relative_to="back_laser_link">0 0 0 0 0 0</pose>
-      <topic>b_scan</topic>
-      <update_rate>12.5</update_rate>
-      <ray>
-        <scan>
-          <horizontal>
-            <samples>541</samples>
-            <resolution>1</resolution>
-            <min_angle>-2.35619449615</min_angle>
-            <max_angle>2.35619449615</max_angle>
-          </horizontal>
-          <vertical>
-            <samples>1</samples>
-            <resolution>0.01</resolution>
-            <min_angle>0</min_angle>
-            <max_angle>0</max_angle>
-          </vertical>
-        </scan>
-        <range>
-          <min>0.05</min>
-          <max>29.0</max>
-          <resolution>0.01</resolution>
-        </range>
-      </ray>
-      <always_on>1</always_on>
-      <visualize>true</visualize>
-    </sensor>
-  </gazebo>
+  <!-- <gazebo reference="${prefix}${link}">
+      <sensor name='${prefix}${link}' type='gpu_lidar'>
+          <pose relative_to='${prefix}${link}'>0 0 0 0 0 0</pose>
+          <topic>${topic}</topic>
+          <update_rate>12.5</update_rate>
+          <gz_frame_id>base_scan</gz_frame_id>
+          <lidar>
+              <scan>
+                  <horizontal>
+                      <samples>541</samples>
+                      <resolution>1</resolution>
+                      <min_angle>-2.35619449615</min_angle>
+                      <max_angle>2.35619449615</max_angle>
+                  </horizontal>
+                  <vertical>
+                      <samples>1</samples>
+                      <resolution>0.01</resolution>
+                      <min_angle>0</min_angle>
+                      <max_angle>0</max_angle>
+                  </vertical>
+              </scan>
+              <range>
+                  <min>0.05</min>
+                  <max>29.0</max>
+                  <resolution>0.01</resolution>
+              </range>
+          </lidar>
+          <always_on>true</always_on>
+          <visualize>true</visualize>
+      </sensor>
+    </gazebo> -->
   <!-- Ultrasound sensors -->
   <joint name="us_1_joint" type="fixed">
     <!-- right ultrasound -->
@@ -237,7 +238,7 @@
   <link name="fl_caster_rotation_link">
     <inertial>
       <!-- <origin xyz="0 0 -0.042500000044" rpy="${0.5 * pi} ${24 * deg_to_rad} ${1.5 * pi}" /> -->
-      <origin rpy="0.41887903200000004 0 1.5707963267948966 " xyz="0 0 -0.042500000044"/>
+      <origin rpy="0.4188790204786391 0 1.5707963267948966 " xyz="0 0 -0.042500000044"/>
       <mass value="0.3097539019"/>
       <inertia ixx="0.0005844517978" ixy="0" ixz="0" iyy="0.00052872551237" iyz="0" izz="0.00017923555074"/>
     </inertial>
@@ -247,12 +248,7 @@
         <mesh filename="package://mir_description/meshes/mir_100/visual/caster-wheel-base.dae"/>
       </geometry>
     </visual>
-    <!-- <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <geometry>
-          <mesh filename="package://mir_description/meshes/collision/caster_wheel_base.stl" />
-        </geometry>
-      </collision> -->
+    <!-- No collision mesh required -->
   </link>
   <!-- caster wheel -->
   <joint name="fl_caster_wheel_joint" type="continuous">
@@ -273,13 +269,6 @@
         <mesh filename="package://mir_description/meshes/mir_100/visual/caster-wheel.dae"/>
       </geometry>
     </visual>
-    <!-- <visual>
-        <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
-        <geometry>
-          <cylinder radius="${mir_caster_wheel_radius}" length="${mir_caster_wheel_width}" />
-        </geometry>
-        <xacro:insert_block name="material_black" />
-      </visual> -->
     <collision>
       <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
       <geometry>
@@ -298,7 +287,7 @@
   <link name="fr_caster_rotation_link">
     <inertial>
       <!-- <origin xyz="0 0 -0.042500000044" rpy="${0.5 * pi} ${24 * deg_to_rad} ${1.5 * pi}" /> -->
-      <origin rpy="0.41887903200000004 0 1.5707963267948966 " xyz="0 0 -0.042500000044"/>
+      <origin rpy="0.4188790204786391 0 1.5707963267948966 " xyz="0 0 -0.042500000044"/>
       <mass value="0.3097539019"/>
       <inertia ixx="0.0005844517978" ixy="0" ixz="0" iyy="0.00052872551237" iyz="0" izz="0.00017923555074"/>
     </inertial>
@@ -308,12 +297,7 @@
         <mesh filename="package://mir_description/meshes/mir_100/visual/caster-wheel-base.dae"/>
       </geometry>
     </visual>
-    <!-- <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <geometry>
-          <mesh filename="package://mir_description/meshes/collision/caster_wheel_base.stl" />
-        </geometry>
-      </collision> -->
+    <!-- No collision mesh required -->
   </link>
   <!-- caster wheel -->
   <joint name="fr_caster_wheel_joint" type="continuous">
@@ -334,13 +318,6 @@
         <mesh filename="package://mir_description/meshes/mir_100/visual/caster-wheel.dae"/>
       </geometry>
     </visual>
-    <!-- <visual>
-        <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
-        <geometry>
-          <cylinder radius="${mir_caster_wheel_radius}" length="${mir_caster_wheel_width}" />
-        </geometry>
-        <xacro:insert_block name="material_black" />
-      </visual> -->
     <collision>
       <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
       <geometry>
@@ -359,7 +336,7 @@
   <link name="bl_caster_rotation_link">
     <inertial>
       <!-- <origin xyz="0 0 -0.042500000044" rpy="${0.5 * pi} ${24 * deg_to_rad} ${1.5 * pi}" /> -->
-      <origin rpy="0.41887903200000004 0 1.5707963267948966 " xyz="0 0 -0.042500000044"/>
+      <origin rpy="0.4188790204786391 0 1.5707963267948966 " xyz="0 0 -0.042500000044"/>
       <mass value="0.3097539019"/>
       <inertia ixx="0.0005844517978" ixy="0" ixz="0" iyy="0.00052872551237" iyz="0" izz="0.00017923555074"/>
     </inertial>
@@ -369,12 +346,7 @@
         <mesh filename="package://mir_description/meshes/mir_100/visual/caster-wheel-base.dae"/>
       </geometry>
     </visual>
-    <!-- <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <geometry>
-          <mesh filename="package://mir_description/meshes/collision/caster_wheel_base.stl" />
-        </geometry>
-      </collision> -->
+    <!-- No collision mesh required -->
   </link>
   <!-- caster wheel -->
   <joint name="bl_caster_wheel_joint" type="continuous">
@@ -395,13 +367,6 @@
         <mesh filename="package://mir_description/meshes/mir_100/visual/caster-wheel.dae"/>
       </geometry>
     </visual>
-    <!-- <visual>
-        <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
-        <geometry>
-          <cylinder radius="${mir_caster_wheel_radius}" length="${mir_caster_wheel_width}" />
-        </geometry>
-        <xacro:insert_block name="material_black" />
-      </visual> -->
     <collision>
       <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
       <geometry>
@@ -420,7 +385,7 @@
   <link name="br_caster_rotation_link">
     <inertial>
       <!-- <origin xyz="0 0 -0.042500000044" rpy="${0.5 * pi} ${24 * deg_to_rad} ${1.5 * pi}" /> -->
-      <origin rpy="0.41887903200000004 0 1.5707963267948966 " xyz="0 0 -0.042500000044"/>
+      <origin rpy="0.4188790204786391 0 1.5707963267948966 " xyz="0 0 -0.042500000044"/>
       <mass value="0.3097539019"/>
       <inertia ixx="0.0005844517978" ixy="0" ixz="0" iyy="0.00052872551237" iyz="0" izz="0.00017923555074"/>
     </inertial>
@@ -430,12 +395,7 @@
         <mesh filename="package://mir_description/meshes/mir_100/visual/caster-wheel-base.dae"/>
       </geometry>
     </visual>
-    <!-- <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
-        <geometry>
-          <mesh filename="package://mir_description/meshes/collision/caster_wheel_base.stl" />
-        </geometry>
-      </collision> -->
+    <!-- No collision mesh required -->
   </link>
   <!-- caster wheel -->
   <joint name="br_caster_wheel_joint" type="continuous">
@@ -456,13 +416,6 @@
         <mesh filename="package://mir_description/meshes/mir_100/visual/caster-wheel.dae"/>
       </geometry>
     </visual>
-    <!-- <visual>
-        <origin xyz="0 0 0" rpy="${pi/2} 0 0" />
-        <geometry>
-          <cylinder radius="${mir_caster_wheel_radius}" length="${mir_caster_wheel_width}" />
-        </geometry>
-        <xacro:insert_block name="material_black" />
-      </visual> -->
     <collision>
       <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
       <geometry>
@@ -477,26 +430,157 @@
     <axis xyz="0 0 1"/>
   </joint>
   <link name="surface"/>
-  <transmission name="left_wheel_trans">
-    <type>transmission_interface/SimpleTransmission</type>
+  <ros2_control name="GazeboSimSystem" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
     <joint name="left_wheel_joint">
-      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
     </joint>
-    <actuator name="left_wheel_motor">
-      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
-  <transmission name="right_wheel_trans">
-    <type>transmission_interface/SimpleTransmission</type>
     <joint name="right_wheel_joint">
-      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
     </joint>
-    <actuator name="right_wheel_motor">
-      <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
-      <mechanicalReduction>1</mechanicalReduction>
-    </actuator>
-  </transmission>
+    <joint name="bl_caster_wheel_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="bl_caster_rotation_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="fr_caster_wheel_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="fr_caster_rotation_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="br_caster_wheel_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="br_caster_rotation_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="fl_caster_wheel_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="fl_caster_rotation_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+  <gazebo>
+    <!-- Joint state publisher -->
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>/home/ubuntu/workspace/install/mir_description/share/mir_description/config/diff_drive_controller_velocity.yaml</parameters>
+      <controller_manager_name>mir_controller_manager</controller_manager_name>
+      <ros>
+        <namespace/>
+        <remapping>/robot_description:=/robot_description</remapping>
+      </ros>
+    </plugin>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
+      </plugin>
+  </gazebo>
+  <gazebo reference="imu_link">
+    <!-- IMU  -->
+    <sensor name="imu_sensor" type="imu">
+      <always_on>1</always_on>
+      <update_rate>50</update_rate>
+      <imu>
+        <enable_orientation>0</enable_orientation>
+        <angular_velocity>
+          <x>
+            <noise type="gaussian">
+              <mean>0</mean>
+              <stddev>0.009</stddev>
+              <bias_mean>0.00075</bias_mean>
+              <bias_stddev>0.005</bias_stddev>
+              <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
+              <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
+              <precision>0.00025</precision>
+            </noise>
+          </x>
+          <y>
+            <noise type="gaussian">
+              <mean>0</mean>
+              <stddev>0.009</stddev>
+              <bias_mean>0.00075</bias_mean>
+              <bias_stddev>0.005</bias_stddev>
+              <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
+              <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
+              <precision>0.00025</precision>
+            </noise>
+          </y>
+          <z>
+            <noise type="gaussian">
+              <mean>0</mean>
+              <stddev>0.009</stddev>
+              <bias_mean>0.00075</bias_mean>
+              <bias_stddev>0.005</bias_stddev>
+              <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
+              <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
+              <precision>0.00025</precision>
+            </noise>
+          </z>
+        </angular_velocity>
+        <linear_acceleration>
+          <x>
+            <noise type="gaussian">
+              <mean>0</mean>
+              <stddev>0.021</stddev>
+              <bias_mean>0.05</bias_mean>
+              <bias_stddev>0.0075</bias_stddev>
+              <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+              <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+              <precision>0.005</precision>
+            </noise>
+          </x>
+          <y>
+            <noise type="gaussian">
+              <mean>0</mean>
+              <stddev>0.021</stddev>
+              <bias_mean>0.05</bias_mean>
+              <bias_stddev>0.0075</bias_stddev>
+              <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+              <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+              <precision>0.005</precision>
+            </noise>
+          </y>
+          <z>
+            <noise type="gaussian">
+              <mean>0</mean>
+              <stddev>0.021</stddev>
+              <bias_mean>0.05</bias_mean>
+              <bias_stddev>0.0075</bias_stddev>
+              <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+              <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+              <precision>0.005</precision>
+            </noise>
+          </z>
+        </linear_acceleration>
+      </imu>
+    </sensor>
+  </gazebo>
   <gazebo reference="left_wheel_link">
     <mu1 value="200"/>
     <mu2 value="200"/>
@@ -539,32 +623,4 @@
     <kd value="1.0"/>
     <minDepth>0.01</minDepth>
   </gazebo>
-  <!-- <gazebo>
-      <plugin name="p3d_base_controller" filename="libgazebo_ros_p3d.so">
-        <alwaysOn>true</alwaysOn>
-        <updateRate>50.0</updateRate>
-        <bodyName>${prefix}base_footprint</bodyName>
-        <topicName>base_pose_ground_truth</topicName>
-        <gaussianNoise>0.01</gaussianNoise>
-        <frameName>map</frameName>
-        <xyzOffsets>0 0 0</xyzOffsets>
-        <rpyOffsets>0 0 0</rpyOffsets>
-      </plugin>
-    </gazebo> -->
-  <!-- <gazebo>
-      <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-        <xacro:unless value="${robot_namespace == ''}">
-          <robotNamespace>${robot_namespace}</robotNamespace>
-        </xacro:unless>
-        <controlPeriod>0.001</controlPeriod>
-        <legacyModeNS>false</legacyModeNS>
-      </plugin>
-    </gazebo> -->
-  <!-- instead of the controller_plugin_gazebo, you can use the diffdrive controller like this
-    <xacro:diff_controller_plugin_gazebo prefix=""
-      left_wheel_joint="left_wheel_joint"
-      right_wheel_joint="right_wheel_joint"
-      wheel_separation="${2*mir_act_wheel_dy}"
-      wheel_radius="${mir_act_wheel_radius}"/>
-  -->
 </robot>

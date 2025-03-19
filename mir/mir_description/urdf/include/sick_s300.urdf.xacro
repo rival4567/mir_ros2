@@ -30,7 +30,7 @@
       </xacro:box_inertial>
     </link>
 
-    <gazebo reference="${prefix}${link}">
+    <!-- <gazebo reference="${prefix}${link}">
       <sensor name='${prefix}${link}' type='gpu_lidar'>
           <pose relative_to='${prefix}${link}'>0 0 0 0 0 0</pose>
           <topic>${topic}</topic>
@@ -60,6 +60,6 @@
           <always_on>true</always_on>
           <visualize>true</visualize>
       </sensor>
-    </gazebo>
+    </gazebo> -->
   </xacro:macro>
 </robot>

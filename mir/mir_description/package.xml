@@ -11,20 +11,16 @@
 
   <depend>ros_gz</depend>
   <depend>gz_ros2_control</depend>
-  <depend>diff_drive_controller</depend>
-  <depend>gz_plugin_vendor</depend>
   <depend>robot_state_publisher</depend>
   <depend>rviz2</depend>
   <depend>xacro</depend>
   <depend>urdf</depend>
-  <depend>position_controllers</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
   <exec_depend>launch_ros</exec_depend>
   <exec_depend>urdf_launch</exec_depend>
-
 
   <export>
     <build_type>ament_cmake</build_type>

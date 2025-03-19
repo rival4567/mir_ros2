@@ -1,9 +1,9 @@
 <launch>
-  <arg name="model" default="$(find-pkg-share mir_description)/urdf/mir.urdf.xacro" />
-  <arg name="use_gui" default="true" />
-  <arg name="sim" default="false" />
-  <arg name="mir_type" default="mir_100" />
-  <arg name="tf_prefix" default="" />
+  <arg name="model" default="$(find-pkg-share mir_description)/urdf/mir.urdf.xacro" description="xacro file of the MiR robot"/>
+  <arg name="use_gui" default="true" description="use joint_state_publisher gui or not"/>
+  <arg name="sim" default="false" description="run in simulation or reality"/>
+  <arg name="mir_type" default="mir_100" description="use which kind of mir robot. Currently only MiR 100 and MiR 200 are available."/>
+  <arg name="tf_prefix" default="" description="TF prefix"/>
 
   <node name="robot_state_publisher" pkg="robot_state_publisher" exec="robot_state_publisher" output="screen">
       <param name="robot_description" value="$(command 'xacro $(var model) tf_prefix:=$(var tf_prefix) mir_type:=$(var mir_type)')" />
