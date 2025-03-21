@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:include filename="$(find mir_gazebo)/urdf/include/control.gazebo.xacro" />
+    <xacro:include filename="$(find mir_gazebo)/urdf/include/imu.gazebo.xacro" />
+    <xacro:include filename="$(find mir_gazebo)/urdf/include/lidar.gazebo.xacro" />
+    
+    <xacro:macro name="gz_ros2" params="prefix">
+      <xacro:gz_ros2_control prefix="${prefix}" />
+      <gazebo>
+        <!-- Joint state publisher -->
+        <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+          <parameters>$(find mir_gazebo)/config/diff_drive_controller_velocity.yaml</parameters>
+          <controller_manager_name>mir_controller_manager</controller_manager_name>
+          <ros>
+            <namespace></namespace>
+            <remapping>/robot_description:=/robot_description</remapping>
+          </ros>
+        </plugin>
+        <plugin
+          filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+          <render_engine>ogre2</render_engine>
+        </plugin>
+        <plugin
+          filename="gz-sim-imu-system"
+          name="gz::sim::systems::Imu">
+        </plugin>
+      </gazebo>
+      <xacro:imu_gazebo prefix="${prefix}" />
+      <xacro:lidar_gazebo prefix="${prefix}" />
+    </xacro:macro>
+
+</robot>

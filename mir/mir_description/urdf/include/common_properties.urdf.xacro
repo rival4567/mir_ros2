@@ -39,11 +39,11 @@
       <color rgba="0.1 0.1 0.1 1"/>
     </material>
   </xacro:property>
-  <xacro:property name="material_aluminum">
+  <!-- <xacro:property name="material_aluminum">
     <material name="aluminum">
       <color rgba="0.8 0.8 0.8 1" />
     </material>
-  </xacro:property>
+  </xacro:property> -->
   <xacro:property name="material_silver">
     <material name="silver">
       <color rgba="0.79 0.82 0.93 1" />

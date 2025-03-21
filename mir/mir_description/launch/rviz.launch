@@ -4,9 +4,11 @@
   <arg name="sim" default="false" description="run in simulation or reality"/>
   <arg name="mir_type" default="mir_100" description="use which kind of mir robot. Currently only MiR 100 and MiR 200 are available."/>
   <arg name="tf_prefix" default="" description="TF prefix"/>
+  <arg name="use_nominal_extrinsics" default="false" description="Use all frames of the realsense camera"/>
 
   <node name="robot_state_publisher" pkg="robot_state_publisher" exec="robot_state_publisher" output="screen">
-      <param name="robot_description" value="$(command 'xacro $(var model) tf_prefix:=$(var tf_prefix) mir_type:=$(var mir_type)')" />
+      <param name="robot_description" value="$(command 'xacro $(var model) tf_prefix:=$(var tf_prefix)
+        mir_type:=$(var mir_type) use_nominal_extrinsics:=$(var use_nominal_extrinsics)')" />
       <param name="use_sim_time" value="true" />
   </node>
  

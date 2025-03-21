@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 
 <launch>
-    <arg name="model" default="$(find-pkg-share mir_description)/urdf/mir.urdf.xacro" />
+    <arg name="model" default="$(find-pkg-share mir_gazebo)/urdf/mir.urdf.xacro" />
     <arg name="start_gazebo" default="true" />
     <arg name="start_rviz" default="true" />
     <arg name="mir_type" default="mir_100" />
-    <arg name="world" default="$(find-pkg-share mir_description)/world/empty.world" />
+    <arg name="world" default="$(find-pkg-share mir_gazebo)/world/empty.world" />
     <arg name="headless" default="false" />
     <arg name="gz_args" default="--headless-rendering -s -v 4 -r $(var world)" if="$(var headless)" />
     <arg name="gz_args" default="-r $(var world)" unless="$(var headless)"/>
-    <arg name="config_file" default="$(find-pkg-share mir_description)/config/ros-gz-bridge.yaml" />
-    <arg name="robot_controllers" default="$(find-pkg-share mir_description)/config/diff_drive_controller_velocity.yaml" />
+    <arg name="config_file" default="$(find-pkg-share mir_gazebo)/config/ros-gz-bridge.yaml" />
+    <arg name="robot_controllers" default="$(find-pkg-share mir_gazebo)/config/diff_drive_controller_velocity.yaml" />
 
 
     <!-- Start Gazebo -->
@@ -41,6 +41,7 @@
             <arg name="use_gui" value="false" />
             <arg name="mir_type" value="$(var mir_type)" />
             <arg name="sim" value="true" />
+            <arg name="use_nominal_extrinsics" value="true" />
         </include>
     </group>
 </launch>

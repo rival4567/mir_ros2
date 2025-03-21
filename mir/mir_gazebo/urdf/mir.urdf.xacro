@@ -3,6 +3,8 @@
 
   <!-- MiR base -->
   <xacro:include filename="$(find mir_description)/urdf/include/mir_macro.xacro" />
+  <!-- Add common gazebo specific properties -->
+  <xacro:include filename="$(find mir_gazebo)/urdf/include/macro.gazebo.xacro" />
 
   <xacro:arg name="tf_prefix" default="" />
   <xacro:property name="tf_prefix_" value="$(arg tf_prefix)" />
@@ -18,4 +20,5 @@
   <xacro:property name="use_nominal_extrinsics" value="$(arg use_nominal_extrinsics)" /> 
   
   <xacro:mir prefix="${prefix}" use_nominal_extrinsics="${use_nominal_extrinsics}" />
+  <xacro:gz_ros2 prefix="${prefix}"/>
 </robot>

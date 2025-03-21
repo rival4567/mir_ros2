@@ -4,7 +4,6 @@
 <!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->
 <!-- =================================================================================== -->
 <robot name="mir">
-  <!-- necessary because args cannot be accessed inside ${} expressions -->
   <material name="aluminum">
     <color rgba="0.5 0.5 0.5 1"/>
   </material>
@@ -91,15 +90,22 @@
     </inertial>
   </link>
   <!-- 3D cameras -->
-  <joint name="base_link_to_camera1" type="fixed">
+  <!-- Charging point -->
+  <link name="charge_point_link"/>
+  <joint name="base_link_to_charging_link" type="fixed">
     <parent link="base_link"/>
+    <child link="charge_point_link"/>
+    <origin rpy="0.0 0.0 0.0" xyz="0.4675 0.0 0.13"/>
+  </joint>
+  <joint name="charge_point_link_to_camera1" type="fixed">
+    <parent link="charge_point_link"/>
     <child link="camera_1_link"/>
-    <origin rpy="0.0 0.0 0.7853981633974483" xyz="0.392 0.2358 0.1914"/>
+    <origin rpy="-1.5707963267948966 -0.37 -1.0471975511965976" xyz="-0.025 0.08125 -0.015"/>
   </joint>
   <link name="camera_1_link"/>
   <!-- camera body, with origin at bottom screw mount -->
   <joint name="camera1_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <origin rpy="0 -0.5235987755982988 0" xyz="0.01 0.001 -0.02"/>
     <parent link="camera_1_link"/>
     <child link="camera1_bottom_screw_frame"/>
   </joint>
@@ -130,15 +136,15 @@
       <inertia ixx="0.003881243" ixy="0.0" ixz="0.0" iyy="0.000498940" iyz="0.0" izz="0.003879257"/>
     </inertial>
   </link>
-  <joint name="base_link_to_camera2" type="fixed">
-    <parent link="base_link"/>
+  <joint name="charge_point_link_to_camera2" type="fixed">
+    <parent link="charge_point_link"/>
     <child link="camera_2_link"/>
-    <origin rpy="0.0 0.0 0.7853981633974483" xyz="0.392 0.2358 0.1914"/>
+    <origin rpy="-1.5707963267948966 -0.35 1.0471975511965976" xyz="-0.025 -0.08125 -0.015"/>
   </joint>
   <link name="camera_2_link"/>
   <!-- camera body, with origin at bottom screw mount -->
   <joint name="camera2_joint" type="fixed">
-    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <origin rpy="0 0.5235987755982988 0" xyz="0 0 0"/>
     <parent link="camera_2_link"/>
     <child link="camera2_bottom_screw_frame"/>
   </joint>
@@ -441,4 +447,269 @@
     <axis xyz="0 0 1"/>
   </joint>
   <link name="surface"/>
+  <ros2_control name="GazeboSimSystem" type="system">
+    <hardware>
+      <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+    </hardware>
+    <joint name="left_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="right_wheel_joint">
+      <command_interface name="velocity">
+        <param name="min">-1</param>
+        <param name="max">1</param>
+      </command_interface>
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="bl_caster_wheel_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="bl_caster_rotation_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="fr_caster_wheel_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="fr_caster_rotation_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="br_caster_wheel_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="br_caster_rotation_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="fl_caster_wheel_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+    <joint name="fl_caster_rotation_joint">
+      <state_interface name="position"/>
+      <state_interface name="velocity"/>
+    </joint>
+  </ros2_control>
+  <gazebo reference="left_wheel_link">
+    <mu1 value="200"/>
+    <mu2 value="200"/>
+    <kp value="10000000.0"/>
+    <kd value="1.0"/>
+    <minDepth>0.01</minDepth>
+  </gazebo>
+  <gazebo reference="right_wheel_link">
+    <mu1 value="200"/>
+    <mu2 value="200"/>
+    <kp value="10000000.0"/>
+    <kd value="1.0"/>
+    <minDepth>0.01</minDepth>
+  </gazebo>
+  <gazebo reference="fl_caster_wheel_link">
+    <mu1 value="1"/>
+    <mu2 value="1"/>
+    <kp value="10000000.0"/>
+    <kd value="1.0"/>
+    <minDepth>0.01</minDepth>
+  </gazebo>
+  <gazebo reference="fr_caster_wheel_link">
+    <mu1 value="1"/>
+    <mu2 value="1"/>
+    <kp value="10000000.0"/>
+    <kd value="1.0"/>
+    <minDepth>0.01</minDepth>
+  </gazebo>
+  <gazebo reference="bl_caster_wheel_link">
+    <mu1 value="1"/>
+    <mu2 value="1"/>
+    <kp value="10000000.0"/>
+    <kd value="1.0"/>
+    <minDepth>0.01</minDepth>
+  </gazebo>
+  <gazebo reference="br_caster_wheel_link">
+    <mu1 value="1"/>
+    <mu2 value="1"/>
+    <kp value="10000000.0"/>
+    <kd value="1.0"/>
+    <minDepth>0.01</minDepth>
+  </gazebo>
+  <gazebo>
+    <!-- Joint state publisher -->
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+      <parameters>/home/ubuntu/workspace/install/mir_gazebo/share/mir_gazebo/config/diff_drive_controller_velocity.yaml</parameters>
+      <controller_manager_name>mir_controller_manager</controller_manager_name>
+      <ros>
+        <namespace/>
+        <remapping>/robot_description:=/robot_description</remapping>
+      </ros>
+    </plugin>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
+        </plugin>
+  </gazebo>
+  <!-- IMU  -->
+  <gazebo reference="imu_link">
+    <sensor name="imu_sensor" type="imu">
+      <always_on>1</always_on>
+      <update_rate>41</update_rate>
+      <visualize>true</visualize>
+      <topic>imu</topic>
+      <imu>
+        <enable_orientation>1</enable_orientation>
+        <angular_velocity>
+          <x>
+            <noise type="gaussian">
+              <mean>0</mean>
+              <stddev>0.002828</stddev>
+              <bias_mean>0</bias_mean>
+              <bias_stddev>0.007071</bias_stddev>
+              <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
+              <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
+              <precision>0.00025</precision>
+            </noise>
+          </x>
+          <y>
+            <noise type="gaussian">
+              <mean>0</mean>
+              <stddev>0.009</stddev>
+              <bias_mean>0.002828</bias_mean>
+              <bias_stddev>0.005</bias_stddev>
+              <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
+              <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
+              <precision>0.00025</precision>
+            </noise>
+          </y>
+          <z>
+            <noise type="gaussian">
+              <mean>0</mean>
+              <stddev>0.009</stddev>
+              <bias_mean>0.000547</bias_mean>
+              <bias_stddev>0.005</bias_stddev>
+              <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
+              <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
+              <precision>0.00025</precision>
+            </noise>
+          </z>
+        </angular_velocity>
+        <linear_acceleration>
+          <x>
+            <noise type="gaussian">
+              <mean>0</mean>
+              <stddev>0.007071</stddev>
+              <bias_mean>0.05</bias_mean>
+              <bias_stddev>0.0075</bias_stddev>
+              <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+              <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+              <precision>0.005</precision>
+            </noise>
+          </x>
+          <y>
+            <noise type="gaussian">
+              <mean>0</mean>
+              <stddev>0.01</stddev>
+              <bias_mean>0.05</bias_mean>
+              <bias_stddev>0.0075</bias_stddev>
+              <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+              <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+              <precision>0.005</precision>
+            </noise>
+          </y>
+          <z>
+            <noise type="gaussian">
+              <mean>0</mean>
+              <stddev>0.011401</stddev>
+              <bias_mean>0.05</bias_mean>
+              <bias_stddev>0.0075</bias_stddev>
+              <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+              <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+              <precision>0.005</precision>
+            </noise>
+          </z>
+        </linear_acceleration>
+        <!-- Orientation noise not yet available in gazebo sim -->
+        <!-- https://github.com/gazebosim/gz-sensors/issues/501 -->
+        <!-- <orientation>
+                        <x>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>1</stddev>
+                            <bias_mean>0.05</bias_mean>
+                            <bias_stddev>0.0075</bias_stddev>
+                            <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+                            <precision>0.005</precision>
+                        </noise>
+                        </x>
+                        <y>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>1</stddev>
+                            <bias_mean>0.05</bias_mean>
+                            <bias_stddev>0.0075</bias_stddev>
+                            <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+                            <precision>0.005</precision>
+                        </noise>
+                        </y>
+                        <z>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>1</stddev>
+                            <bias_mean>0.05</bias_mean>
+                            <bias_stddev>0.0075</bias_stddev>
+                            <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+                            <precision>0.005</precision>
+                        </noise>
+                        </z>
+                    </orientation> -->
+      </imu>
+    </sensor>
+  </gazebo>
+  <!-- SICK S300 Lidar -->
+  <gazebo reference="front_laser_link">
+    <sensor name="gpu_lidar" type="gpu_lidar">
+      &quot;
+                
+      <pose relative_to="front_laser_link">0 0 0 0 0 0</pose>
+      <topic>lidar</topic>
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>640</samples>
+            <resolution>1</resolution>
+            <min_angle>-1.396263</min_angle>
+            <max_angle>1.396263</max_angle>
+          </horizontal>
+          <vertical>
+            <samples>1</samples>
+            <resolution>0.01</resolution>
+            <min_angle>0</min_angle>
+            <max_angle>0</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>0.08</min>
+          <max>10.0</max>
+          <resolution>0.01</resolution>
+        </range>
+      </ray>
+      <always_on>1</always_on>
+      <visualize>true</visualize>
+    </sensor>
+  </gazebo>
 </robot>

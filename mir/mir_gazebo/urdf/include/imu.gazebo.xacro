@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:macro name="imu_gazebo" params="prefix">
+        <!-- IMU  -->
+        <gazebo reference="${prefix}imu_link">
+            <sensor name="${prefix}imu_sensor" type="imu">
+                <always_on>1</always_on>
+                <update_rate>41</update_rate>
+                <visualize>true</visualize>
+                <topic>${prefix}imu</topic>
+                <imu>
+                    <enable_orientation>1</enable_orientation>
+                    <angular_velocity>
+                        <x>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>0.002828</stddev>
+                            <bias_mean>0</bias_mean>
+                            <bias_stddev>0.007071</bias_stddev>
+                            <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
+                            <precision>0.00025</precision>
+                        </noise>
+                        </x>
+                        <y>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>0.009</stddev>
+                            <bias_mean>0.002828</bias_mean>
+                            <bias_stddev>0.005</bias_stddev>
+                            <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
+                            <precision>0.00025</precision>
+                        </noise>
+                        </y>
+                        <z>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>0.009</stddev>
+                            <bias_mean>0.000547</bias_mean>
+                            <bias_stddev>0.005</bias_stddev>
+                            <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
+                            <precision>0.00025</precision>
+                        </noise>
+                        </z>
+                    </angular_velocity>
+                    <linear_acceleration>
+                        <x>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>0.007071</stddev>
+                            <bias_mean>0.05</bias_mean>
+                            <bias_stddev>0.0075</bias_stddev>
+                            <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+                            <precision>0.005</precision>
+                        </noise>
+                        </x>
+                        <y>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>0.01</stddev>
+                            <bias_mean>0.05</bias_mean>
+                            <bias_stddev>0.0075</bias_stddev>
+                            <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+                            <precision>0.005</precision>
+                        </noise>
+                        </y>
+                        <z>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>0.011401</stddev>
+                            <bias_mean>0.05</bias_mean>
+                            <bias_stddev>0.0075</bias_stddev>
+                            <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+                            <precision>0.005</precision>
+                        </noise>
+                        </z>
+                    </linear_acceleration>
+                    <!-- Orientation noise not yet available in gazebo sim -->
+                    <!-- https://github.com/gazebosim/gz-sensors/issues/501 -->
+                    <!-- <orientation>
+                        <x>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>1</stddev>
+                            <bias_mean>0.05</bias_mean>
+                            <bias_stddev>0.0075</bias_stddev>
+                            <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+                            <precision>0.005</precision>
+                        </noise>
+                        </x>
+                        <y>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>1</stddev>
+                            <bias_mean>0.05</bias_mean>
+                            <bias_stddev>0.0075</bias_stddev>
+                            <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+                            <precision>0.005</precision>
+                        </noise>
+                        </y>
+                        <z>
+                        <noise type="gaussian">
+                            <mean>0</mean>
+                            <stddev>1</stddev>
+                            <bias_mean>0.05</bias_mean>
+                            <bias_stddev>0.0075</bias_stddev>
+                            <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
+                            <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
+                            <precision>0.005</precision>
+                        </noise>
+                        </z>
+                    </orientation> -->
+                </imu>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+</robot>

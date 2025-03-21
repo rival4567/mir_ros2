@@ -2,9 +2,12 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:arg name="mir_type" default="mir_100" />   <!-- The MiR variant. Can be "mir_100" or "mir_200" for now.-->
   <xacro:property name="mir_type" value="$(arg mir_type)" />  <!-- necessary because args cannot be accessed inside ${} expressions -->
+  <xacro:arg name="use_nominal_extrinsics" default="false" />
+  <xacro:property name="use_nominal_extrinsics" value="$(arg use_nominal_extrinsics)" /> 
 
   <xacro:include filename="$(find mir_description)/urdf/include/common_properties.urdf.xacro" />
   <xacro:include filename="$(find mir_description)/urdf/include/sick_s300.urdf.xacro" />
+  <xacro:include filename="$(find mir_description)/urdf/include/realsense_camera.urdf.xacro" />
 
   <xacro:property name="deg_to_rad" value="${pi/180}" />
 
@@ -87,6 +90,20 @@
   </xacro:if>
   
   <xacro:property name="laser_dz" value="0.1914" />
+
+  <!-- from visually matching up the meshes of the MiR and the 3D cameras -->
+  <xacro:if value="${mir_type == 'mir_100'}">
+    <xacro:property name="camera_dx" value="-0.025" />
+    <xacro:property name="camera_dy" value="0.08125" />
+  </xacro:if>
+  <xacro:if value="${mir_type == 'mir_200'}">
+    <xacro:property name="camera_dx" value="-0.025" />
+    <xacro:property name="camera_dy" value="0.08125" />
+  </xacro:if>
+  <!-- TODO: Find the values of the camera dx and dy -->
+  <xacro:if value="${mir_type == 'mir_250'}">
+  </xacro:if>
+  <xacro:property name="camera_dz" value="-0.015" />
 
   <xacro:macro name="actuated_wheel" params="prefix locationprefix locationright">
     <joint name="${prefix}${locationprefix}_wheel_joint" type="continuous">
@@ -180,7 +197,7 @@
     </link>
   </xacro:macro>
 
-  <xacro:macro name="mir" params="prefix">
+  <xacro:macro name="mir" params="prefix use_nominal_extrinsics">
     <link name="${prefix}base_footprint" />
 
     <joint name="${prefix}base_joint" type="fixed">
@@ -241,8 +258,36 @@
       <child link="${prefix}back_laser_link" />
       <origin xyz="${-laser_dx + mir_act_wheel_dx} ${-laser_dy} ${laser_dz}" rpy="0.0 0.0 ${-0.75 * pi}" />
     </joint>
-
     <xacro:sick_s300 prefix="${prefix}" link="back_laser_link" topic="b_scan" />
+
+    <!-- 3D cameras -->
+    <!-- Charging point -->
+    <link name="${prefix}charge_point_link" />
+    <joint name="${prefix}base_link_to_charging_link" type="fixed">
+      <parent link="${prefix}base_link" />
+      <child link="${prefix}charge_point_link" />
+      <origin xyz="0.4675 0.0 0.13" rpy="0.0 0.0 0.0" />
+    </joint>
+
+    <joint name="${prefix}charge_point_link_to_camera1" type="fixed">
+      <parent link="${prefix}charge_point_link" />
+      <child link="${prefix}camera_1_link" />
+      <origin xyz="${camera_dx} ${camera_dy} ${camera_dz}" rpy="${-pi/2} -0.37 ${-pi/3}" />
+    </joint>
+    <xacro:realsense_cameras prefix="${prefix}" link="camera_1_link" name="camera1" use_nominal_extrinsics="${use_nominal_extrinsics}" add_plug="false" use_mesh="true">
+      <origin xyz="0.01 0.001 -0.02" rpy="0 ${-pi/6} 0"/>
+    </xacro:realsense_cameras>
+
+    <joint name="${prefix}charge_point_link_to_camera2" type="fixed">
+      <parent link="${prefix}charge_point_link" />
+      <child link="${prefix}camera_2_link" />
+      <origin xyz="${camera_dx} -${camera_dy} ${camera_dz}" rpy="${-pi/2} -0.35 ${pi/3}" />
+    </joint>
+    <xacro:realsense_cameras prefix="${prefix}" link="camera_2_link" name="camera2" use_nominal_extrinsics="${use_nominal_extrinsics}" add_plug="false" use_mesh="true">
+      <origin xyz="0 0 0" rpy="0 ${pi/6} 0"/>
+    </xacro:realsense_cameras>
+
+
 
     <!-- Ultrasound sensors -->
     <joint name="${prefix}us_1_joint" type="fixed">   <!-- right ultrasound -->

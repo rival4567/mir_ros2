@@ -2,15 +2,15 @@
   <model name='mir'>
     <link name='base_footprint'>
       <inertial>
-        <pose>-0.010455101563880241 0 0.1517968301110581 0 0 0</pose>
-        <mass>65.209753901900001</mass>
+        <pose>-0.0094893931925710846 2.5915397656292678e-06 0.15142383800162071 0 0 0</pose>
+        <mass>65.043999999999997</mass>
         <inertia>
-          <ixx>0.82760609330043278</ixx>
-          <ixy>-0.22187173998755999</ixy>
-          <ixz>-0.0050954005185053766</ixz>
-          <iyy>1.9022144420734319</iyy>
-          <iyz>7.9516823838238092e-21</iyz>
-          <izz>2.2887915511694299</izz>
+          <ixx>0.83460955065946574</ixx>
+          <ixy>-0.22193205415256359</ixy>
+          <ixz>-0.00047938575414187279</ixz>
+          <iyy>1.938333749197118</iyy>
+          <iyz>-2.9538236075815811e-05</iyz>
+          <izz>2.3211475522814178</izz>
         </inertia>
       </inertial>
       <collision name='base_footprint_fixed_joint_lump__base_link_collision'>
@@ -20,6 +20,22 @@
             <scale>1 1 1</scale>
             <uri>model://mir_description/meshes/mir_100/collision/base.stl</uri>
           </mesh>
+        </geometry>
+      </collision>
+      <collision name='base_footprint_fixed_joint_lump__camera1_link_collision_1'>
+        <pose>0.4453526696328326 0.068559666353336102 0.1187433129193733 -1.762350117219587 -0.31852716257095287 -0.49273867058666515</pose>
+        <geometry>
+          <box>
+            <size>0.025049999999999999 0.089999999999999997 0.025000000000000001</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='base_footprint_fixed_joint_lump__camera2_link_collision_2'>
+        <pose>0.44496213372232862 -0.065934824203287251 0.1202908683454757 -1.3902691181408522 -0.30150558572572372 0.49610274927739545</pose>
+        <geometry>
+          <box>
+            <size>0.025049999999999999 0.089999999999999997 0.025000000000000001</size>
+          </box>
         </geometry>
       </collision>
       <visual name='base_footprint_fixed_joint_lump__base_link_visual'>
@@ -40,7 +56,25 @@
           </mesh>
         </geometry>
       </visual>
-      <visual name='base_footprint_fixed_joint_lump__front_laser_link_visual_2'>
+      <visual name='base_footprint_fixed_joint_lump__camera1_link_visual_2'>
+        <pose>0.44895057545773531 0.066627910663756645 0.1200899359664465 -0.52359877559829782 1.2007963267948965 -1.0471975511965965</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file:///opt/ros/jazzy/share/realsense2_description/meshes/d435.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='base_footprint_fixed_joint_lump__camera2_link_visual_3'>
+        <pose>0.44857315770130279 -0.063980347204354457 0.1215677886577568 0.5235987755982987 1.2207963267948965 1.0471975511965981</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>file:///opt/ros/jazzy/share/realsense2_description/meshes/d435.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='base_footprint_fixed_joint_lump__front_laser_link_visual_4'>
         <pose>0.46500133905932739 -0.27331688245431418 0.34689999999999999 0 0 3.1415926535897931</pose>
         <geometry>
           <mesh>
@@ -49,18 +83,48 @@
           </mesh>
         </geometry>
       </visual>
+      <sensor name='gpu_lidar' type='gpu_lidar'>
+        <pose relative_to='front_laser_link'>0 0 0 0 0 0</pose>
+        <topic>lidar</topic>
+        <update_rate>10</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>640</samples>
+              <resolution>1</resolution>
+              <min_angle>-1.396263</min_angle>
+              <max_angle>1.396263</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>1</samples>
+              <resolution>0.01</resolution>
+              <min_angle>0</min_angle>
+              <max_angle>0</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.080000000000000002</min>
+            <max>10</max>
+            <resolution>0.01</resolution>
+          </range>
+        </ray>
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+      </sensor>
       <sensor name='imu_sensor' type='imu'>
         <always_on>true</always_on>
-        <update_rate>50</update_rate>
+        <update_rate>41</update_rate>
+        <visualize>true</visualize>
+        <topic>imu</topic>
         <imu>
-          <enable_orientation>false</enable_orientation>
+          <enable_orientation>true</enable_orientation>
           <angular_velocity>
             <x>
               <noise type='gaussian'>
                 <mean>0</mean>
-                <stddev>0.0089999999999999993</stddev>
-                <bias_mean>0.00075000000000000002</bias_mean>
-                <bias_stddev>0.0050000000000000001</bias_stddev>
+                <stddev>0.0028279999999999998</stddev>
+                <bias_mean>0</bias_mean>
+                <bias_stddev>0.007071</bias_stddev>
                 <dynamic_bias_stddev>2.0000000000000002e-05</dynamic_bias_stddev>
                 <dynamic_bias_correlation_time>400</dynamic_bias_correlation_time>
                 <precision>0.00025000000000000001</precision>
@@ -70,7 +134,7 @@
               <noise type='gaussian'>
                 <mean>0</mean>
                 <stddev>0.0089999999999999993</stddev>
-                <bias_mean>0.00075000000000000002</bias_mean>
+                <bias_mean>0.0028279999999999998</bias_mean>
                 <bias_stddev>0.0050000000000000001</bias_stddev>
                 <dynamic_bias_stddev>2.0000000000000002e-05</dynamic_bias_stddev>
                 <dynamic_bias_correlation_time>400</dynamic_bias_correlation_time>
@@ -81,7 +145,7 @@
               <noise type='gaussian'>
                 <mean>0</mean>
                 <stddev>0.0089999999999999993</stddev>
-                <bias_mean>0.00075000000000000002</bias_mean>
+                <bias_mean>0.00054699999999999996</bias_mean>
                 <bias_stddev>0.0050000000000000001</bias_stddev>
                 <dynamic_bias_stddev>2.0000000000000002e-05</dynamic_bias_stddev>
                 <dynamic_bias_correlation_time>400</dynamic_bias_correlation_time>
@@ -93,7 +157,7 @@
             <x>
               <noise type='gaussian'>
                 <mean>0</mean>
-                <stddev>0.021000000000000001</stddev>
+                <stddev>0.007071</stddev>
                 <bias_mean>0.050000000000000003</bias_mean>
                 <bias_stddev>0.0074999999999999997</bias_stddev>
                 <dynamic_bias_stddev>0.00037500000000000001</dynamic_bias_stddev>
@@ -104,7 +168,7 @@
             <y>
               <noise type='gaussian'>
                 <mean>0</mean>
-                <stddev>0.021000000000000001</stddev>
+                <stddev>0.01</stddev>
                 <bias_mean>0.050000000000000003</bias_mean>
                 <bias_stddev>0.0074999999999999997</bias_stddev>
                 <dynamic_bias_stddev>0.00037500000000000001</dynamic_bias_stddev>
@@ -115,7 +179,7 @@
             <z>
               <noise type='gaussian'>
                 <mean>0</mean>
-                <stddev>0.021000000000000001</stddev>
+                <stddev>0.011401</stddev>
                 <bias_mean>0.050000000000000003</bias_mean>
                 <bias_stddev>0.0074999999999999997</bias_stddev>
                 <dynamic_bias_stddev>0.00037500000000000001</dynamic_bias_stddev>
@@ -685,7 +749,7 @@
       </visual>
     </link>
     <plugin name='gz_ros2_control::GazeboSimROS2ControlPlugin' filename='gz_ros2_control-system'>
-      <parameters>/home/ubuntu/workspace/install/mir_description/share/mir_description/config/diff_drive_controller_velocity.yaml</parameters>
+      <parameters>/home/ubuntu/workspace/install/mir_gazebo/share/mir_gazebo/config/diff_drive_controller_velocity.yaml</parameters>
       <controller_manager_name>mir_controller_manager</controller_manager_name>
       <ros>
         <namespace/>
@@ -706,6 +770,48 @@
       <pose>-0.354354 -0.23580000000000001 0.19139999999999999 0 0 -2.3561944901923448</pose>
     </frame>
     <frame name='back_laser_link' attached_to='base_link_to_back_laser_joint'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='camera1_link_joint' attached_to='camera1_bottom_screw_frame'>
+      <pose>0.0106 0.017500000000000002 0.012500000000000001 0 0 0</pose>
+    </frame>
+    <frame name='camera1_link' attached_to='camera1_link_joint'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='camera1_joint' attached_to='camera_1_link'>
+      <pose>0.01 0.001 -0.02 0 -0.52359877559829882 0</pose>
+    </frame>
+    <frame name='camera1_bottom_screw_frame' attached_to='camera1_joint'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='charge_point_link_to_camera1' attached_to='charge_point_link'>
+      <pose>-0.025000000000000001 0.081250000000000003 -0.014999999999999999 -1.5707963267948957 -0.37000000000000016 -1.047197551196597</pose>
+    </frame>
+    <frame name='camera_1_link' attached_to='charge_point_link_to_camera1'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='camera2_link_joint' attached_to='camera2_bottom_screw_frame'>
+      <pose>0.0106 0.017500000000000002 0.012500000000000001 0 0 0</pose>
+    </frame>
+    <frame name='camera2_link' attached_to='camera2_link_joint'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='camera2_joint' attached_to='camera_2_link'>
+      <pose>0 0 0 0 0.52359877559829882 0</pose>
+    </frame>
+    <frame name='camera2_bottom_screw_frame' attached_to='camera2_joint'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='charge_point_link_to_camera2' attached_to='charge_point_link'>
+      <pose>-0.025000000000000001 -0.081250000000000003 -0.014999999999999999 -1.5707963267948959 -0.35000000000000003 1.0471975511965979</pose>
+    </frame>
+    <frame name='camera_2_link' attached_to='charge_point_link_to_camera2'>
+      <pose>0 0 0 0 0 0</pose>
+    </frame>
+    <frame name='base_link_to_charging_link' attached_to='base_link'>
+      <pose>0.46750000000000003 0 0.13 0 0 0</pose>
+    </frame>
+    <frame name='charge_point_link' attached_to='base_link_to_charging_link'>
       <pose>0 0 0 0 0 0</pose>
     </frame>
     <frame name='base_link_to_front_laser_joint' attached_to='base_link'>
