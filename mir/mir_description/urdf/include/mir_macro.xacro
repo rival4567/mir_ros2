@@ -260,7 +260,6 @@
     </joint>
     <xacro:sick_s300 prefix="${prefix}" link="back_laser_link" topic="b_scan" />
 
-    <!-- 3D cameras -->
     <!-- Charging point -->
     <link name="${prefix}charge_point_link" />
     <joint name="${prefix}base_link_to_charging_link" type="fixed">
@@ -268,7 +267,7 @@
       <child link="${prefix}charge_point_link" />
       <origin xyz="0.4675 0.0 0.13" rpy="0.0 0.0 0.0" />
     </joint>
-
+    <!-- 3D cameras -->
     <joint name="${prefix}charge_point_link_to_camera1" type="fixed">
       <parent link="${prefix}charge_point_link" />
       <child link="${prefix}camera_1_link" />

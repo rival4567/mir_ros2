@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="prefix" default="" description="TF prefix"/>
+
+    <node pkg="tf2_ros" exec="static_transform_publisher" name="base_scan_raw_connect" args="0 0 0 0 0 0 $(var prefix)/back_laser_frame mir/base_footprint/back_gpu_lidar" />
+    <node pkg="tf2_ros" exec="static_transform_publisher" name="base_scan_point_connect" args="0 0 0 0 0 0 $(var prefix)/back_laser_frame mir/base_footprint/back_gpu_lidar" />
+    <node pkg="tf2_ros" exec="static_transform_publisher" name="front_scan_raw_connect" args="0 0 0 0 0 0 $(var prefix)/front_laser_frame mir/base_footprint/front_gpu_lidar" />
+    <node pkg="tf2_ros" exec="static_transform_publisher" name="front_scan_point_connect" args="0 0 0 0 0 0 $(var prefix)/front_laser_frame mir/base_footprint/front_gpu_lidar" />
+    <node pkg="tf2_ros" exec="static_transform_publisher" name="imu_connect" args="0 0 0 0 0 0 $(var prefix)/imu_frame mir/base_footprint/imu_sensor" />
+    <node pkg="tf2_ros" exec="static_transform_publisher" name="camera1_depthimage_connect" args="0 0 0 0 0 0 camera1_depth_frame mir/base_footprint/camera1depth" />
+    <node pkg="tf2_ros" exec="static_transform_publisher" name="camera1_depthimage_connect" args="0 0 0 0 0 0 camera2_depth_frame mir/base_footprint/camera2depth" />
+</launch>

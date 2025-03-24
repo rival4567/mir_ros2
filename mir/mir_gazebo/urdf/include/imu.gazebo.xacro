@@ -19,7 +19,6 @@
                             <bias_stddev>0.007071</bias_stddev>
                             <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
                             <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
-                            <precision>0.00025</precision>
                         </noise>
                         </x>
                         <y>
@@ -30,7 +29,6 @@
                             <bias_stddev>0.005</bias_stddev>
                             <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
                             <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
-                            <precision>0.00025</precision>
                         </noise>
                         </y>
                         <z>
@@ -41,7 +39,6 @@
                             <bias_stddev>0.005</bias_stddev>
                             <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
                             <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
-                            <precision>0.00025</precision>
                         </noise>
                         </z>
                     </angular_velocity>
@@ -54,7 +51,6 @@
                             <bias_stddev>0.0075</bias_stddev>
                             <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
                             <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
-                            <precision>0.005</precision>
                         </noise>
                         </x>
                         <y>
@@ -65,7 +61,6 @@
                             <bias_stddev>0.0075</bias_stddev>
                             <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
                             <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
-                            <precision>0.005</precision>
                         </noise>
                         </y>
                         <z>
@@ -76,7 +71,6 @@
                             <bias_stddev>0.0075</bias_stddev>
                             <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
                             <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
-                            <precision>0.005</precision>
                         </noise>
                         </z>
                     </linear_acceleration>

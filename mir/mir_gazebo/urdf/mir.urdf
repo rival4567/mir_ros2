@@ -89,7 +89,6 @@
       <inertia ixx="0.005824997669999999" ixy="0.0" ixz="0.0" iyy="0.00585609765756" iyz="0.0" izz="0.00483609806556"/>
     </inertial>
   </link>
-  <!-- 3D cameras -->
   <!-- Charging point -->
   <link name="charge_point_link"/>
   <joint name="base_link_to_charging_link" type="fixed">
@@ -97,6 +96,7 @@
     <child link="charge_point_link"/>
     <origin rpy="0.0 0.0 0.0" xyz="0.4675 0.0 0.13"/>
   </joint>
+  <!-- 3D cameras -->
   <joint name="charge_point_link_to_camera1" type="fixed">
     <parent link="charge_point_link"/>
     <child link="camera_1_link"/>
@@ -555,6 +555,7 @@
       </ros>
     </plugin>
     <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <frame_id>custom_params/link</frame_id>
       <render_engine>ogre2</render_engine>
     </plugin>
     <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu">
@@ -578,7 +579,6 @@
               <bias_stddev>0.007071</bias_stddev>
               <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
               <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
-              <precision>0.00025</precision>
             </noise>
           </x>
           <y>
@@ -589,7 +589,6 @@
               <bias_stddev>0.005</bias_stddev>
               <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
               <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
-              <precision>0.00025</precision>
             </noise>
           </y>
           <z>
@@ -600,7 +599,6 @@
               <bias_stddev>0.005</bias_stddev>
               <dynamic_bias_stddev>0.00002</dynamic_bias_stddev>
               <dynamic_bias_correlation_time>400.0</dynamic_bias_correlation_time>
-              <precision>0.00025</precision>
             </noise>
           </z>
         </angular_velocity>
@@ -613,7 +611,6 @@
               <bias_stddev>0.0075</bias_stddev>
               <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
               <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
-              <precision>0.005</precision>
             </noise>
           </x>
           <y>
@@ -624,7 +621,6 @@
               <bias_stddev>0.0075</bias_stddev>
               <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
               <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
-              <precision>0.005</precision>
             </noise>
           </y>
           <z>
@@ -635,7 +631,6 @@
               <bias_stddev>0.0075</bias_stddev>
               <dynamic_bias_stddev>0.000375</dynamic_bias_stddev>
               <dynamic_bias_correlation_time>175.0</dynamic_bias_correlation_time>
-              <precision>0.005</precision>
             </noise>
           </z>
         </linear_acceleration>
@@ -679,22 +674,33 @@
       </imu>
     </sensor>
   </gazebo>
-  <!-- SICK S300 Lidar -->
-  <gazebo reference="front_laser_link">
-    <sensor name="gpu_lidar" type="gpu_lidar">
+  <joint name="front_laser_link_to_front_laser_frame_joint" type="fixed">
+    <parent link="front_laser_link"/>
+    <child link="front_laser_frame"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link name="front_laser_frame"/>
+  <!-- SICK S300 Laser scanner -->
+  <gazebo reference="front_laser_frame">
+    <sensor name="front_gpu_lidar" type="gpu_lidar">
       &quot;
                 
-      <pose relative_to="front_laser_link">0 0 0 0 0 0</pose>
-      <topic>lidar</topic>
-      <update_rate>10</update_rate>
-      <ray>
+      <pose relative_to="front_laser_frame">0 0 0 0 0 0</pose>
+      <topic>front_laser/scan</topic>
+      <update_rate>12.5</update_rate>
+      <!-- Frame id tag is not available in Gazebo Harmonic SDF Version 1.11. It is available in 1.12 
+                No fix for now -->
+      <!-- <frame_id>${prefix}${location}_laser_frame</frame_id> -->
+      <lidar>
         <scan>
           <horizontal>
-            <samples>640</samples>
+            <samples>541</samples>
             <resolution>1</resolution>
-            <min_angle>-1.396263</min_angle>
-            <max_angle>1.396263</max_angle>
+            <!-- has to be 1; actual resolution will be computed from number of samples + min_angle/max_angle -->
+            <min_angle>-2.35619449615</min_angle>
+            <max_angle>2.35619449615</max_angle>
           </horizontal>
+          <!-- No vertical laser scans -->
           <vertical>
             <samples>1</samples>
             <resolution>0.01</resolution>
@@ -703,13 +709,277 @@
           </vertical>
         </scan>
         <range>
-          <min>0.08</min>
-          <max>10.0</max>
+          <min>0.05</min>
+          <max>29.0</max>
           <resolution>0.01</resolution>
         </range>
-      </ray>
+        <noise>
+          <type>gaussian</type>
+          <!-- Noise parameters based on published spec for S300 achieving
+                            "+-29mm" accuracy at range < 3m (~0.01 of the range) at
+                            1 sigma. -->
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </lidar>
       <always_on>1</always_on>
       <visualize>true</visualize>
     </sensor>
+  </gazebo>
+  <joint name="back_laser_link_to_back_laser_frame_joint" type="fixed">
+    <parent link="back_laser_link"/>
+    <child link="back_laser_frame"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
+  <link name="back_laser_frame"/>
+  <!-- SICK S300 Laser scanner -->
+  <gazebo reference="back_laser_frame">
+    <sensor name="back_gpu_lidar" type="gpu_lidar">
+      &quot;
+                
+      <pose relative_to="back_laser_frame">0 0 0 0 0 0</pose>
+      <topic>back_laser/scan</topic>
+      <update_rate>12.5</update_rate>
+      <!-- Frame id tag is not available in Gazebo Harmonic SDF Version 1.11. It is available in 1.12 
+                No fix for now -->
+      <!-- <frame_id>${prefix}${location}_laser_frame</frame_id> -->
+      <lidar>
+        <scan>
+          <horizontal>
+            <samples>541</samples>
+            <resolution>1</resolution>
+            <!-- has to be 1; actual resolution will be computed from number of samples + min_angle/max_angle -->
+            <min_angle>-2.35619449615</min_angle>
+            <max_angle>2.35619449615</max_angle>
+          </horizontal>
+          <!-- No vertical laser scans -->
+          <vertical>
+            <samples>1</samples>
+            <resolution>0.01</resolution>
+            <min_angle>0</min_angle>
+            <max_angle>0</max_angle>
+          </vertical>
+        </scan>
+        <range>
+          <min>0.05</min>
+          <max>29.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <!-- Noise parameters based on published spec for S300 achieving
+                            "+-29mm" accuracy at range < 3m (~0.01 of the range) at
+                            1 sigma. -->
+          <mean>0.0</mean>
+          <stddev>0.01</stddev>
+        </noise>
+      </lidar>
+      <always_on>1</always_on>
+      <visualize>true</visualize>
+    </sensor>
+  </gazebo>
+  <gazebo reference="camera1_link">
+    <self_collide>0</self_collide>
+    <enable_wind>0</enable_wind>
+    <kinematic>0</kinematic>
+    <gravity>1</gravity>
+    <!--<mu>1</mu>-->
+    <mu2>1</mu2>
+    <fdir1>0 0 0</fdir1>
+    <!--<slip1>0</slip1>
+      <slip2>0</slip2>-->
+    <kp>1e+13</kp>
+    <kd>1</kd>
+    <!--<max_vel>0.01</max_vel>
+      <min_depth>0</min_depth>-->
+    <sensor name="camera1_sensor" type="camera">
+      <camera name="camera1">
+        <horizontal_fov>1.2112585008840648</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>RGB_INT8</format>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>100</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <always_on>1</always_on>
+      <update_rate>30</update_rate>
+      <visualize>1</visualize>
+    </sensor>
+    <!-- <sensor name="${camera_name}ired1" type="camera">
+        <camera name="${camera_name}">
+          <horizontal_fov>${85.2*deg_to_rad}</horizontal_fov>
+          <image>
+            <width>1280</width>
+            <height>720</height>
+            <format>L_INT8</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>100</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.05</stddev>
+          </noise>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <visualize>0</visualize>
+      </sensor>
+      <sensor name="${camera_name}ired2" type="camera">
+        <camera name="${camera_name}">
+          <horizontal_fov>${85.2*deg_to_rad}</horizontal_fov>
+          <image>
+            <width>1280</width>
+            <height>720</height>
+            <format>L_INT8</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>100</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.05</stddev>
+          </noise>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <visualize>0</visualize>
+      </sensor>
+      <sensor name="${camera_name}depth" type="depth">
+        <camera name="${camera_name}">
+          <horizontal_fov>${85.2*deg_to_rad}</horizontal_fov>
+          <image>
+            <width>1280</width>
+            <height>720</height>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>100</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.100</stddev>
+          </noise>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <visualize>0</visualize>
+      </sensor> -->
+  </gazebo>
+  <gazebo reference="camera2_link">
+    <self_collide>0</self_collide>
+    <enable_wind>0</enable_wind>
+    <kinematic>0</kinematic>
+    <gravity>1</gravity>
+    <!--<mu>1</mu>-->
+    <mu2>1</mu2>
+    <fdir1>0 0 0</fdir1>
+    <!--<slip1>0</slip1>
+      <slip2>0</slip2>-->
+    <kp>1e+13</kp>
+    <kd>1</kd>
+    <!--<max_vel>0.01</max_vel>
+      <min_depth>0</min_depth>-->
+    <sensor name="camera2_sensor" type="camera">
+      <camera name="camera2">
+        <horizontal_fov>1.2112585008840648</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>RGB_INT8</format>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>100</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <always_on>1</always_on>
+      <update_rate>30</update_rate>
+      <visualize>1</visualize>
+    </sensor>
+    <!-- <sensor name="${camera_name}ired1" type="camera">
+        <camera name="${camera_name}">
+          <horizontal_fov>${85.2*deg_to_rad}</horizontal_fov>
+          <image>
+            <width>1280</width>
+            <height>720</height>
+            <format>L_INT8</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>100</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.05</stddev>
+          </noise>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <visualize>0</visualize>
+      </sensor>
+      <sensor name="${camera_name}ired2" type="camera">
+        <camera name="${camera_name}">
+          <horizontal_fov>${85.2*deg_to_rad}</horizontal_fov>
+          <image>
+            <width>1280</width>
+            <height>720</height>
+            <format>L_INT8</format>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>100</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.05</stddev>
+          </noise>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <visualize>0</visualize>
+      </sensor>
+      <sensor name="${camera_name}depth" type="depth">
+        <camera name="${camera_name}">
+          <horizontal_fov>${85.2*deg_to_rad}</horizontal_fov>
+          <image>
+            <width>1280</width>
+            <height>720</height>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>100</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.100</stddev>
+          </noise>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <visualize>0</visualize>
+      </sensor> -->
   </gazebo>
 </robot>

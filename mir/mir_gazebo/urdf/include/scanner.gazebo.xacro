@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:macro name="scanner_gazebo" params="prefix location">
+        <joint name="${prefix}${location}_laser_link_to_${location}_laser_frame_joint" type="fixed">
+            <parent link="${prefix}${location}_laser_link" />
+            <child link="${prefix}${location}_laser_frame" />
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </joint>
+        <link name="${prefix}${location}_laser_frame" />
+        <!-- SICK S300 Laser scanner -->
+        <gazebo reference="${prefix}${location}_laser_frame">
+            <sensor name='${prefix}${location}_gpu_lidar' type='gpu_lidar'>"
+                <pose relative_to='${prefix}${location}_laser_frame'>0 0 0 0 0 0</pose>
+                <topic>${prefix}${location}_laser/scan</topic>
+                <update_rate>12.5</update_rate>
+                <!-- Frame id tag is not available in Gazebo Harmonic SDF Version 1.11. It is available in 1.12 
+                No fix for now -->
+                <!-- <frame_id>${prefix}${location}_laser_frame</frame_id> -->
+                <lidar>
+                    <scan>
+                        <horizontal>
+                            <samples>541</samples>
+                            <resolution>1</resolution>  <!-- has to be 1; actual resolution will be computed from number of samples + min_angle/max_angle -->
+                            <min_angle>-2.35619449615</min_angle>
+                            <max_angle>2.35619449615</max_angle>
+                        </horizontal>
+                        <!-- No vertical laser scans -->
+                        <vertical>
+                            <samples>1</samples>
+                            <resolution>0.01</resolution>
+                            <min_angle>0</min_angle>
+                            <max_angle>0</max_angle>
+                        </vertical>
+                    </scan>
+                    <range>
+                        <min>0.05</min>
+                        <max>29.0</max>
+                        <resolution>0.01</resolution>
+                    </range>
+                    <noise>
+                        <type>gaussian</type>
+                        <!-- Noise parameters based on published spec for S300 achieving
+                            "+-29mm" accuracy at range < 3m (~0.01 of the range) at
+                            1 sigma. -->
+                        <mean>0.0</mean>
+                        <stddev>0.01</stddev>
+                    </noise>
+                </lidar>
+                <always_on>1</always_on>
+                <visualize>true</visualize>
+            </sensor>
+        </gazebo>
+    </xacro:macro>
+</robot>

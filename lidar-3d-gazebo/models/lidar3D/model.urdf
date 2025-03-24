@@ -1,8 +1,0 @@
-<?xml version="1.0" ?>
-<sdf version="1.10">
-    <world>
-        <model name='lidar_3d' canonical_link='lidar_frame'>
-            <pose relative_to='world'>0 0 0 0 0 0</pose>
-        </model>
-    </world>
-</sdf>

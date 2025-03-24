@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-
 <launch>
     <arg name="model" default="$(find-pkg-share mir_gazebo)/urdf/mir.urdf.xacro" />
     <arg name="start_gazebo" default="true" />
@@ -11,7 +10,7 @@
     <arg name="gz_args" default="-r $(var world)" unless="$(var headless)"/>
     <arg name="config_file" default="$(find-pkg-share mir_gazebo)/config/ros-gz-bridge.yaml" />
     <arg name="robot_controllers" default="$(find-pkg-share mir_gazebo)/config/diff_drive_controller_velocity.yaml" />
-
+    <arg name="prefix" default="" description="TF prefix"/>
 
     <!-- Start Gazebo -->
     <group if="$(var start_gazebo)">
@@ -23,15 +22,28 @@
             <arg name="config_file" value="$(var config_file)" />
             <arg name="bridge_name" value="xyz" />
         </include>
-        <node name="spawn_robot_urdf" pkg="ros_gz_sim" exec="create"
-            args="-topic /robot_description -x 0.0 -y 0.0 -z 0.0 -name mir" output="screen" />
+        <node name="spawn_robot_urdf" pkg="ros_gz_sim" exec="create">
+            <param name="topic" value="/robot_description" />
+            <param name="x" value="0.0" />
+            <param name="y" value="0.0" />
+            <param name="z" value="0.0" />
+            <param name="name" value="mir" />
+        </node>
         
         <!-- Run the following two nodes separately -->
         <node name="controller_manager" pkg="controller_manager" exec="spawner"
-            args="joint_state_broadcaster --controller-manager mir_controller_manager"/>
+            args="joint_state_broadcaster --controller-manager mir_controller_manager" />
+
         <node name="diff_drive_base_controller" pkg="controller_manager" exec="spawner"
-            args="diff_drive_base_controller --param-file $(var robot_controllers)  --controller-manager mir_controller_manager"/>
+            args="diff_drive_base_controller --controller-manager mir_controller_manager --param-file $(var robot_controllers)" />
     </group>
+
+    <!-- The sensor data topic from gazebo would only be visualized when there is a transform between frame_id and a robot link. Unfortunately, it is not possible to change
+    frame_id of topic in gazebo Harmonic topics. So, manually, creating a transform between the frame_id and the correct robot link -->
+    <!-- https://github.com/gazebosim/gz-sensors/issues/306 -->
+    <include file="$(find-pkg-share mir_gazebo)/launch/frame_id_tf.launch">
+        <arg name="prefix" value="$(var prefix)" />
+    </include>
 
     <!-- Add gazebo bridge for trasmitting topics from gazebo to ROS -->
     <!-- Show in RViz -->
@@ -41,7 +53,9 @@
             <arg name="use_gui" value="false" />
             <arg name="mir_type" value="$(var mir_type)" />
             <arg name="sim" value="true" />
+            <arg name="tf_prefix" value="$(var prefix)" />
             <arg name="use_nominal_extrinsics" value="true" />
+            <arg name="rviz_config" value="$(find-pkg-share mir_gazebo)/config/rviz/lidar.rviz" />
         </include>
     </group>
 </launch>

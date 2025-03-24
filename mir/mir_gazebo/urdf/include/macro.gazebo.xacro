@@ -2,8 +2,9 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
     <xacro:include filename="$(find mir_gazebo)/urdf/include/control.gazebo.xacro" />
     <xacro:include filename="$(find mir_gazebo)/urdf/include/imu.gazebo.xacro" />
-    <xacro:include filename="$(find mir_gazebo)/urdf/include/lidar.gazebo.xacro" />
-    
+    <xacro:include filename="$(find mir_gazebo)/urdf/include/scanner.gazebo.xacro" />
+    <xacro:include filename="$(find mir_gazebo)/urdf/include/depthcamera.gazebo.xacro" />
+
     <xacro:macro name="gz_ros2" params="prefix">
       <xacro:gz_ros2_control prefix="${prefix}" />
       <gazebo>
@@ -18,6 +19,7 @@
         </plugin>
         <plugin
           filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+          <frame_id>custom_params/link</frame_id>
           <render_engine>ogre2</render_engine>
         </plugin>
         <plugin
@@ -26,7 +28,10 @@
         </plugin>
       </gazebo>
       <xacro:imu_gazebo prefix="${prefix}" />
-      <xacro:lidar_gazebo prefix="${prefix}" />
+      <xacro:scanner_gazebo prefix="${prefix}" location="front" />
+      <xacro:scanner_gazebo prefix="${prefix}" location="back" />
+      <xacro:realsense2_gazebo prefix="${prefix}" camera_name="camera1" />
+      <xacro:realsense2_gazebo prefix="${prefix}" camera_name="camera2" />
     </xacro:macro>
 
 </robot>

@@ -5,6 +5,7 @@
   <arg name="mir_type" default="mir_100" description="use which kind of mir robot. Currently only MiR 100 and MiR 200 are available."/>
   <arg name="tf_prefix" default="" description="TF prefix"/>
   <arg name="use_nominal_extrinsics" default="false" description="Use all frames of the realsense camera"/>
+  <arg name="rviz_config" default="$(find-pkg-share mir_description)/rviz/robot.rviz" />
 
   <node name="robot_state_publisher" pkg="robot_state_publisher" exec="robot_state_publisher" output="screen">
       <param name="robot_description" value="$(command 'xacro $(var model) tf_prefix:=$(var tf_prefix)
@@ -17,7 +18,7 @@
     <node name="joint_state_publisher" pkg="joint_state_publisher" exec="joint_state_publisher" unless="$(var use_gui)" />
   </group>
 
-  <node name="rviz" pkg="rviz2" exec="rviz2" args="-d $(find-pkg-share mir_description)/rviz/robot.rviz">
+  <node name="rviz" pkg="rviz2" exec="rviz2" args="-d $(var rviz_config)">
     <param name="use_sim_time" value="true" />
   </node>
 </launch>
