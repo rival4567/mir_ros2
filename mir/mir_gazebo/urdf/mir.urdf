@@ -702,10 +702,10 @@
           </horizontal>
           <!-- No vertical laser scans -->
           <vertical>
-            <samples>1</samples>
-            <resolution>0.01</resolution>
-            <min_angle>0</min_angle>
-            <max_angle>0</max_angle>
+            <samples>200</samples>
+            <resolution>1</resolution>
+            <min_angle>-0.3926991</min_angle>
+            <max_angle>0.3926991</max_angle>
           </vertical>
         </scan>
         <range>
@@ -754,10 +754,10 @@
           </horizontal>
           <!-- No vertical laser scans -->
           <vertical>
-            <samples>1</samples>
-            <resolution>0.01</resolution>
-            <min_angle>0</min_angle>
-            <max_angle>0</max_angle>
+            <samples>200</samples>
+            <resolution>1</resolution>
+            <min_angle>-0.3926991</min_angle>
+            <max_angle>0.3926991</max_angle>
           </vertical>
         </scan>
         <range>
@@ -792,12 +792,15 @@
     <kd>1</kd>
     <!--<max_vel>0.01</max_vel>
       <min_depth>0</min_depth>-->
-    <sensor name="camera1_sensor" type="camera">
+    <sensor name="camera1color" type="camera">
+      <pose relative_to="camera1_color_frame">0 0 0 0 0 0</pose>
+      <topic>camera1/color/image</topic>
       <camera name="camera1">
         <horizontal_fov>1.2112585008840648</horizontal_fov>
+        <camera_info_topic>camera1/color/image/info</camera_info_topic>
         <image>
-          <width>640</width>
-          <height>480</height>
+          <width>424</width>
+          <height>240</height>
           <format>RGB_INT8</format>
         </image>
         <clip>
@@ -809,76 +812,94 @@
           <mean>0.0</mean>
           <stddev>0.007</stddev>
         </noise>
+        <segmentation_type>instance</segmentation_type>
+        <box_type>2d</box_type>
+        <optical_frame_id>camera1</optical_frame_id>
       </camera>
       <always_on>1</always_on>
-      <update_rate>30</update_rate>
+      <update_rate>1</update_rate>
       <visualize>1</visualize>
     </sensor>
-    <!-- <sensor name="${camera_name}ired1" type="camera">
-        <camera name="${camera_name}">
-          <horizontal_fov>${85.2*deg_to_rad}</horizontal_fov>
-          <image>
-            <width>1280</width>
-            <height>720</height>
-            <format>L_INT8</format>
-          </image>
+    <sensor name="camera1ired1" type="camera">
+      <pose relative_to="camera1_infra1_frame">0 0 0 0 0 0</pose>
+      <topic>camera1/infra1/image</topic>
+      <camera name="camera1">
+        <horizontal_fov>1.4870205226991688</horizontal_fov>
+        <camera_info_topic>camera1/infra1/image/info</camera_info_topic>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>L8</format>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>100</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.05</stddev>
+        </noise>
+      </camera>
+      <always_on>1</always_on>
+      <update_rate>1</update_rate>
+      <visualize>0</visualize>
+    </sensor>
+    <sensor name="camera1ired2" type="camera">
+      <pose relative_to="camera1_infra2_frame">0 0 0 0 0 0</pose>
+      <topic>camera1/infra2/image</topic>
+      <camera name="camera1">
+        <horizontal_fov>1.4870205226991688</horizontal_fov>
+        <camera_info_topic>camera1/infra2/image/info</camera_info_topic>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>L8</format>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>100</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.05</stddev>
+        </noise>
+      </camera>
+      <always_on>1</always_on>
+      <update_rate>1</update_rate>
+      <visualize>0</visualize>
+    </sensor>
+    <sensor name="camera1depth" type="depth">
+      <pose relative_to="camera1_depth_frame">0 0 0 0 0 0</pose>
+      <topic>camera1/depth/image</topic>
+      <camera name="camera1">
+        <horizontal_fov>1.4870205226991688</horizontal_fov>
+        <image>
+          <width>320</width>
+          <height>240</height>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>100</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.100</stddev>
+        </noise>
+        <depth_camera>
+          <output>depths</output>
           <clip>
             <near>0.1</near>
             <far>100</far>
           </clip>
-          <noise>
-            <type>gaussian</type>
-            <mean>0.0</mean>
-            <stddev>0.05</stddev>
-          </noise>
-        </camera>
-        <always_on>1</always_on>
-        <update_rate>30</update_rate>
-        <visualize>0</visualize>
-      </sensor>
-      <sensor name="${camera_name}ired2" type="camera">
-        <camera name="${camera_name}">
-          <horizontal_fov>${85.2*deg_to_rad}</horizontal_fov>
-          <image>
-            <width>1280</width>
-            <height>720</height>
-            <format>L_INT8</format>
-          </image>
-          <clip>
-            <near>0.1</near>
-            <far>100</far>
-          </clip>
-          <noise>
-            <type>gaussian</type>
-            <mean>0.0</mean>
-            <stddev>0.05</stddev>
-          </noise>
-        </camera>
-        <always_on>1</always_on>
-        <update_rate>30</update_rate>
-        <visualize>0</visualize>
-      </sensor>
-      <sensor name="${camera_name}depth" type="depth">
-        <camera name="${camera_name}">
-          <horizontal_fov>${85.2*deg_to_rad}</horizontal_fov>
-          <image>
-            <width>1280</width>
-            <height>720</height>
-          </image>
-          <clip>
-            <near>0.1</near>
-            <far>100</far>
-          </clip>
-          <noise>
-            <type>gaussian</type>
-            <mean>0.0</mean>
-            <stddev>0.100</stddev>
-          </noise>
-        </camera>
-        <always_on>1</always_on>
-        <update_rate>30</update_rate>
-        <visualize>0</visualize>
-      </sensor> -->
+        </depth_camera>
+      </camera>
+      <always_on>1</always_on>
+      <update_rate>1</update_rate>
+      <visualize>0</visualize>
+    </sensor>
   </gazebo>
   <gazebo reference="camera2_link">
     <self_collide>0</self_collide>
@@ -894,12 +915,15 @@
     <kd>1</kd>
     <!--<max_vel>0.01</max_vel>
       <min_depth>0</min_depth>-->
-    <sensor name="camera2_sensor" type="camera">
+    <sensor name="camera2color" type="camera">
+      <pose relative_to="camera2_color_frame">0 0 0 0 0 0</pose>
+      <topic>camera2/color/image</topic>
       <camera name="camera2">
         <horizontal_fov>1.2112585008840648</horizontal_fov>
+        <camera_info_topic>camera2/color/image/info</camera_info_topic>
         <image>
-          <width>640</width>
-          <height>480</height>
+          <width>424</width>
+          <height>240</height>
           <format>RGB_INT8</format>
         </image>
         <clip>
@@ -911,75 +935,93 @@
           <mean>0.0</mean>
           <stddev>0.007</stddev>
         </noise>
+        <segmentation_type>instance</segmentation_type>
+        <box_type>2d</box_type>
+        <optical_frame_id>camera2</optical_frame_id>
       </camera>
       <always_on>1</always_on>
-      <update_rate>30</update_rate>
+      <update_rate>1</update_rate>
       <visualize>1</visualize>
     </sensor>
-    <!-- <sensor name="${camera_name}ired1" type="camera">
-        <camera name="${camera_name}">
-          <horizontal_fov>${85.2*deg_to_rad}</horizontal_fov>
-          <image>
-            <width>1280</width>
-            <height>720</height>
-            <format>L_INT8</format>
-          </image>
+    <sensor name="camera2ired1" type="camera">
+      <pose relative_to="camera2_infra1_frame">0 0 0 0 0 0</pose>
+      <topic>camera2/infra1/image</topic>
+      <camera name="camera2">
+        <horizontal_fov>1.4870205226991688</horizontal_fov>
+        <camera_info_topic>camera2/infra1/image/info</camera_info_topic>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>L8</format>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>100</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.05</stddev>
+        </noise>
+      </camera>
+      <always_on>1</always_on>
+      <update_rate>1</update_rate>
+      <visualize>0</visualize>
+    </sensor>
+    <sensor name="camera2ired2" type="camera">
+      <pose relative_to="camera2_infra2_frame">0 0 0 0 0 0</pose>
+      <topic>camera2/infra2/image</topic>
+      <camera name="camera2">
+        <horizontal_fov>1.4870205226991688</horizontal_fov>
+        <camera_info_topic>camera2/infra2/image/info</camera_info_topic>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>L8</format>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>100</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.05</stddev>
+        </noise>
+      </camera>
+      <always_on>1</always_on>
+      <update_rate>1</update_rate>
+      <visualize>0</visualize>
+    </sensor>
+    <sensor name="camera2depth" type="depth">
+      <pose relative_to="camera2_depth_frame">0 0 0 0 0 0</pose>
+      <topic>camera2/depth/image</topic>
+      <camera name="camera2">
+        <horizontal_fov>1.4870205226991688</horizontal_fov>
+        <image>
+          <width>320</width>
+          <height>240</height>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>100</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.100</stddev>
+        </noise>
+        <depth_camera>
+          <output>depths</output>
           <clip>
             <near>0.1</near>
             <far>100</far>
           </clip>
-          <noise>
-            <type>gaussian</type>
-            <mean>0.0</mean>
-            <stddev>0.05</stddev>
-          </noise>
-        </camera>
-        <always_on>1</always_on>
-        <update_rate>30</update_rate>
-        <visualize>0</visualize>
-      </sensor>
-      <sensor name="${camera_name}ired2" type="camera">
-        <camera name="${camera_name}">
-          <horizontal_fov>${85.2*deg_to_rad}</horizontal_fov>
-          <image>
-            <width>1280</width>
-            <height>720</height>
-            <format>L_INT8</format>
-          </image>
-          <clip>
-            <near>0.1</near>
-            <far>100</far>
-          </clip>
-          <noise>
-            <type>gaussian</type>
-            <mean>0.0</mean>
-            <stddev>0.05</stddev>
-          </noise>
-        </camera>
-        <always_on>1</always_on>
-        <update_rate>30</update_rate>
-        <visualize>0</visualize>
-      </sensor>
-      <sensor name="${camera_name}depth" type="depth">
-        <camera name="${camera_name}">
-          <horizontal_fov>${85.2*deg_to_rad}</horizontal_fov>
-          <image>
-            <width>1280</width>
-            <height>720</height>
-          </image>
-          <clip>
-            <near>0.1</near>
-            <far>100</far>
-          </clip>
-          <noise>
-            <type>gaussian</type>
-            <mean>0.0</mean>
-            <stddev>0.100</stddev>
-          </noise>
-        </camera>
-        <always_on>1</always_on>
-        <update_rate>30</update_rate>
-        <visualize>0</visualize>
-      </sensor> -->
+        </depth_camera>
+      </camera>
+      <always_on>1</always_on>
+      <update_rate>1</update_rate>
+      <visualize>0</visualize>
+    </sensor>
   </gazebo>
 </robot>

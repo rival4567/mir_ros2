@@ -30,8 +30,7 @@
       <xacro:imu_gazebo prefix="${prefix}" />
       <xacro:scanner_gazebo prefix="${prefix}" location="front" />
       <xacro:scanner_gazebo prefix="${prefix}" location="back" />
-      <xacro:realsense2_gazebo prefix="${prefix}" camera_name="camera1" />
-      <xacro:realsense2_gazebo prefix="${prefix}" camera_name="camera2" />
+      <xacro:realsense2_gazebo prefix="${prefix}" camera_name="camera1" update_rate="1" />
+      <xacro:realsense2_gazebo prefix="${prefix}" camera_name="camera2" update_rate="1" />
     </xacro:macro>
-
 </robot>
